@@ -1,0 +1,10 @@
+node_modules
+www
+android
+ios
+dist
+.angular
+.vscode
+.idea
+.DS_Store
+coverage
