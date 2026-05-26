@@ -1,37 +1,54 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
+/// Archivo de estilos globales para la aplicación. Define variables CSS para colores y estilos generales que se pueden reutilizar en toda la aplicación.
+:root {
+  --primary: #2563EB;
+  --primary-gradient-start: #2563EB;
+  --primary-gradient-end: #1D4ED8;
+  --background: #F8FAFC;
+  --cards: #FFFFFF;
+  --borders: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --success: #22C55E;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+  --info: #0EA5E9;
+}
 
-/* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+/* Estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
 
-/* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+/* Estilos para inputs */
+.login-input-wrapper,
+.register-input-wrapper {
+  border: 1.5px solid #CBD5E1 !important;
+  background-color: #F8FAFC !important;
+  border-radius: 14px !important;
+  height: 52px !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+.login-input,
+.register-input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #0F172A !important;
+  font-size: 15px !important;
+  width: 100% !important;
+}
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+.login-input::placeholder,
+.register-input::placeholder {
+  color: #94A3B8 !important;
+}

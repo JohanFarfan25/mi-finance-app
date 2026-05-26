@@ -1,2 +1,14 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+:root {
+    --primary: #2563EB;
+    --primary-gradient-start: #2563EB;
+    --primary-gradient-end: #1D4ED8;
+    --background: #F8FAFC;
+    --cards: #FFFFFF;
+    --borders: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+    --success: #22C55E;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --info: #0EA5E9;
+}

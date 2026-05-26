@@ -9,6 +9,11 @@ import {
 @Injectable({
   providedIn: 'root',
 })
+
+/**
+ * Servicio para manejar la base de datos SQLite utilizando el plugin de Capacitor.
+ * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
+ */
 export class SqliteService {
   private sqlite: SQLiteConnection;
   private db!: SQLiteDBConnection;
@@ -18,6 +23,7 @@ export class SqliteService {
     this.sqlite = new SQLiteConnection(CapacitorSQLite);
   }
 
+  //** Inicializa el plugin de SQLite */
   async initializePlugin(): Promise<void> {
     const platform = Capacitor.getPlatform();
 
@@ -30,6 +36,7 @@ export class SqliteService {
     }
   }
 
+   //** Crea la base de datos */
   async createDatabase(): Promise<void> {
     this.db = await this.sqlite.createConnection(
       this.dbName,
@@ -44,6 +51,7 @@ export class SqliteService {
     await this.createTables();
   }
 
+  //** Crea las tablas de la base de datos */
   private async createTables(): Promise<void> {
     const queries = [
       `CREATE TABLE IF NOT EXISTS users (
