@@ -105,4 +105,5 @@ export class ExpensePage implements OnInit {
     goToIncome() { window.location.href = '/income'; }
     goToCategories() { window.location.href = '/categories'; }
     goToSettings() { window.location.href = '/settings'; }
+    goToExpense() { window.location.href = '/expense'; }
 }

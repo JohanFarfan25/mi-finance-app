@@ -106,6 +106,7 @@ export class BudgetPage implements OnInit {
     goToDashboard() { window.location.href = '/dashboard'; }
     goToIncome() { window.location.href = '/income'; }
     goToExpense() { window.location.href = '/expense'; }
+    goToBudgets() { window.location.href = '/budgets'; }
     goToCategories() { window.location.href = '/categories'; }
     goToSettings() { window.location.href = '/settings'; }
 }

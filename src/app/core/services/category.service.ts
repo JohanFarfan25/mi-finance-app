@@ -3,29 +3,21 @@ import { StorageService } from './storage.service';
 import { Category } from '../models/category';
 
 @Injectable({ providedIn: 'root' })
-
-/**
- * Servicio para manejar las categorías de ingresos y gastos.
- * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
- */
 export class CategoryService {
     private readonly CATEGORIES_KEY = 'categories';
 
     constructor(private storage: StorageService) { }
 
-    //** Obtiene todas las categorías de un usuario **///
     async getCategories(userId: string): Promise<Category[]> {
         const all = await this.storage.get(this.CATEGORIES_KEY) || [];
         return all.filter((c: Category) => c.userId === userId);
     }
 
-    //** Obtiene una categoría por su ID **///
     async getCategoryById(id: string, userId: string): Promise<Category | null> {
-        const all = await this.storage.get(userId) || [];
-        return all.find((c: Category) => c.id === id) || null;
+        const all = await this.storage.get(this.CATEGORIES_KEY) || [];
+        return all.find((c: Category) => c.id === id && c.userId === userId) || null;
     }
 
-    //** Agrega una nueva categoría **///
     async addCategory(category: Omit<Category, 'id' | 'createdAt'>): Promise<Category> {
         const newCategory: Category = {
             ...category,
@@ -38,7 +30,6 @@ export class CategoryService {
         return newCategory;
     }
 
-    //** Actualiza una categoría por su ID **///
     async updateCategory(id: string, updates: Partial<Category>): Promise<void> {
         const all = await this.storage.get(this.CATEGORIES_KEY) || [];
         const index = all.findIndex((c: Category) => c.id === id);
@@ -48,14 +39,12 @@ export class CategoryService {
         }
     }
 
-    //** Elimina una categoría por su ID **///
     async deleteCategory(id: string): Promise<void> {
         const all = await this.storage.get(this.CATEGORIES_KEY) || [];
         const filtered = all.filter((c: Category) => c.id !== id);
         await this.storage.set(this.CATEGORIES_KEY, filtered);
     }
 
-    // Categorías por defecto para un nuevo usuario
     async createDefaultCategories(userId: string): Promise<void> {
         const defaults: Omit<Category, 'id' | 'createdAt'>[] = [
             { name: 'Salario', icon: 'cash-outline', color: '#10B981', type: 'income', userId, isDefault: true },
@@ -69,5 +58,4 @@ export class CategoryService {
             await this.addCategory(cat);
         }
     }
-
 }

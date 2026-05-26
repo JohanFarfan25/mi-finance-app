@@ -1,0 +1,87 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Movimientos</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="goToSettings()">
+                <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="transactions-content">
+    <div class="transactions-wrapper">
+
+        <div class="filter-tabs">
+            <button class="filter-tab" [class.active]="selectedFilter === 'all'"
+                (click)="applyFilter('all')">Todos</button>
+            <button class="filter-tab" [class.active]="selectedFilter === 'income'"
+                (click)="applyFilter('income')">Ingresos</button>
+            <button class="filter-tab" [class.active]="selectedFilter === 'expense'"
+                (click)="applyFilter('expense')">Gastos</button>
+        </div>
+
+        <div class="movements-list">
+            <div *ngIf="filteredMovements.length === 0" class="empty-state">
+                <ion-icon name="document-text-outline"></ion-icon>
+                <p>No hay movimientos registrados.</p>
+            </div>
+
+            <ion-item-sliding *ngFor="let item of filteredMovements">
+                <ion-item lines="none" class="movement-item-container">
+                    <div class="movement-item">
+                        <div class="movement-icon" [style.backgroundColor]="item.categoryColor + '20'">
+                            <ion-icon [name]="item.categoryIcon" [style.color]="item.categoryColor"></ion-icon>
+                        </div>
+                        <div class="movement-info">
+                            <p class="movement-name">{{ item.description }}</p>
+                            <p class="movement-detail">{{ item.categoryName }} &bull; {{ item.date | date:'dd/MM/yyyy'
+                                }}</p>
+                        </div>
+                        <p class="movement-amount" [class.amount-positive]="item.type === 'income'"
+                            [class.amount-negative]="item.type === 'expense'">
+                            {{ item.type === 'income' ? '+' : '-' }}{{ item.amount |
+                            currency:currencyCode:'symbol':'1.0-0' }}
+                        </p>
+                    </div>
+                </ion-item>
+
+                <ion-item-options side="end">
+                    <ion-item-option color="danger" (click)="deleteMovement(item.id)">
+                        <ion-icon slot="icon-only" name="trash"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        </div>
+    </div>
+</ion-content>
+
+<ion-tab-bar class="dashboard-tab-bar" slot="bottom">
+    <ion-tab-button (click)="goToDashboard()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg><span>Inicio</span></ion-tab-button>
+    <ion-tab-button (click)="goToIncome()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path d="M12 4v16m8-8H4" />
+        </svg><span>Ingresos</span></ion-tab-button>
+    <ion-tab-button (click)="goToExpense()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path d="M20 12H4" />
+        </svg><span>Gastos</span></ion-tab-button>
+    <ion-tab-button (click)="goToCategories()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg><span>Categorías</span></ion-tab-button>
+    <ion-tab-button (click)="goToSettings()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <circle cx="12" cy="12" r="3" />
+        </svg><span>Más</span></ion-tab-button>
+</ion-tab-bar>

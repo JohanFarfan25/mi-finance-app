@@ -1,31 +1,50 @@
-<ion-header>
+<ion-header class="ion-no-border">
     <ion-toolbar>
         <ion-title>{{ isEdit ? 'Editar' : 'Nueva' }} categoría</ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="dismiss()">Cerrar</ion-button>
+            <ion-button (click)="dismiss()">
+                <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+            </ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-    <ion-item>
-        <ion-label position="floating">Nombre</ion-label>
-        <ion-input [(ngModel)]="categoryData.name" required></ion-input>
-    </ion-item>
-    <ion-item>
-        <ion-label position="floating">Icono (nombre Ionicons)</ion-label>
-        <ion-input [(ngModel)]="categoryData.icon" placeholder="ej. cart-outline"></ion-input>
-    </ion-item>
-    <ion-item>
-        <ion-label position="floating">Color (hex)</ion-label>
-        <ion-input [(ngModel)]="categoryData.color" placeholder="#3B82F6"></ion-input>
-    </ion-item>
-    <ion-item>
-        <ion-label>Tipo</ion-label>
-        <ion-select [(ngModel)]="categoryData.type">
-            <ion-select-option value="income">Ingreso</ion-select-option>
-            <ion-select-option value="expense">Gasto</ion-select-option>
-        </ion-select>
-    </ion-item>
-    <ion-button expand="block" (click)="save()" [disabled]="!categoryData.name">Guardar</ion-button>
+    <div class="category-form-container">
+        <ion-item lines="none" class="form-item">
+            <ion-label position="floating">Nombre *</ion-label>
+            <ion-input [(ngModel)]="categoryData.name" required></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="form-item">
+            <ion-label position="floating">Icono (Ionicons)</ion-label>
+            <ion-input [(ngModel)]="categoryData.icon" placeholder="ej. cart-outline"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="form-item">
+            <ion-label position="floating">Color (hex)</ion-label>
+            <ion-input [(ngModel)]="categoryData.color" placeholder="#3B82F6"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="form-item">
+            <ion-label>Tipo</ion-label>
+            <ion-select [(ngModel)]="categoryData.type" interface="action-sheet">
+                <ion-select-option value="income">Ingreso</ion-select-option>
+                <ion-select-option value="expense">Gasto</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <div class="preview-section" *ngIf="categoryData.name">
+            <p>Vista previa:</p>
+            <div class="preview-icon" [style.backgroundColor]="categoryData.color + '20'">
+                <ion-icon [name]="categoryData.icon || 'pricetag-outline'"
+                    [style.color]="categoryData.color"></ion-icon>
+                <span>{{ categoryData.name }}</span>
+            </div>
+        </div>
+
+        <ion-button expand="block" (click)="save()" [disabled]="!categoryData.name" class="save-button">
+            {{ isEdit ? 'Actualizar' : 'Crear' }}
+        </ion-button>
+    </div>
 </ion-content>

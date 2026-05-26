@@ -46,7 +46,8 @@ export class CategoryDetailPage implements OnInit {
     }
 
     async loadCategoryData() {
-        const category = await this.categoryService.getCategoryById(this.categoryId!, this.currentUser!.id);
+        if (!this.categoryId || !this.currentUser) return;
+        const category = await this.categoryService.getCategoryById(this.categoryId, this.currentUser.id);
         if (category) {
             this.categoryName = category.name;
             this.categoryIcon = category.icon;
@@ -56,7 +57,8 @@ export class CategoryDetailPage implements OnInit {
     }
 
     async loadTransactions() {
-        const all = await this.transactionService.getTransactionsByUserId(this.currentUser!.id);
+        if (!this.currentUser) return;
+        const all = await this.transactionService.getTransactionsByUserId(this.currentUser.id);
         this.transactions = all.filter(tx => tx.categoryId === this.categoryId);
         this.totalAmount = this.transactions.reduce((sum, tx) => sum + tx.amount, 0);
     }

@@ -1,0 +1,170 @@
+.transactions-content {
+    --background: #F8FAFC;
+}
+
+ion-header.dashboard-header {
+    background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+
+    ion-toolbar {
+        --background: transparent;
+        --border-width: 0;
+        padding: 4px 16px 8px 16px;
+    }
+}
+
+.transactions-wrapper {
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.filter-tabs {
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filter-tab {
+    flex: 1;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748B;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &.active {
+        background-color: #2563EB;
+        color: #FFFFFF;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    }
+}
+
+.movements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 80px;
+    /* space for tab bar */
+}
+
+.movement-item-container {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
+    margin-bottom: 8px;
+}
+
+.movement-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    width: 100%;
+}
+
+.movement-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+}
+
+.movement-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.movement-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #0F172A;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movement-detail {
+    font-size: 12px;
+    color: #94A3B8;
+    margin: 4px 0 0 0;
+}
+
+.movement-amount {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.movement-amount.amount-positive {
+    color: #10B981;
+}
+
+.movement-amount.amount-negative {
+    color: #EF4444;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: #94A3B8;
+
+    ion-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        color: #CBD5E1;
+    }
+
+    p {
+        font-size: 14px;
+        margin: 0;
+    }
+}
+
+.dashboard-tab-bar {
+    --background: #FFFFFF;
+    --border: 1px solid #E2E8F0;
+    --color: #94A3B8;
+    height: 64px;
+    padding-bottom: 8px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+
+    ion-tab-button {
+        --color: #94A3B8;
+        --color-selected: #2563EB;
+
+        span {
+            font-size: 10px;
+            font-weight: 400;
+        }
+    }
+
+    .tab-active {
+        --color: #2563EB;
+        --color-selected: #2563EB;
+    }
+}

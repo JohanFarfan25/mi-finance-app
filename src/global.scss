@@ -1,4 +1,3 @@
-/// Archivo de estilos globales para la aplicación. Define variables CSS para colores y estilos generales que se pueden reutilizar en toda la aplicación.
 :root {
   --primary: #2563EB;
   --primary-gradient-start: #2563EB;
@@ -51,4 +50,39 @@ body {
 .login-input::placeholder,
 .register-input::placeholder {
   color: #94A3B8 !important;
+}
+
+ion-content {
+  --offset-bottom: 0px !important;
+  --offset-top: 0px !important;
+  --padding-bottom: 16px;
+  --padding-top: 16px;
+  height: 100%;
+}
+
+ion-tab-bar {
+  position: sticky;
+  bottom: 0;
+  background: white;
+}
+
+ion-content::part(scroll) {
+  padding-bottom: 80px !important;
+}
+
+.custom-fab {
+  position: fixed !important;
+  bottom: 80px !important;
+  right: 20px !important;
+  z-index: 1000;
+}
+
+@media (max-width: 576px) {
+  ion-content::part(scroll) {
+    padding-bottom: 90px !important;
+  }
+
+  .custom-fab {
+    bottom: 85px !important;
+  }
 }

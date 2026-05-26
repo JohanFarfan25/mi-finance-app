@@ -144,5 +144,5 @@ export class SettingsPage implements OnInit {
     goToIncome() { window.location.href = '/income'; }
     goToExpense() { window.location.href = '/expense'; }
     goToCategories() { window.location.href = '/categories'; }
-    goToMore() { window.location.href = '/settings'; }
+    goToSettings() { window.location.href = '/settings'; }
 }

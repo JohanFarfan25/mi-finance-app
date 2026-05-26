@@ -239,6 +239,35 @@
     box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
 }
 
+.dashboard-tab-bar {
+    --background: #FFFFFF;
+    --border: 1px solid #E2E8F0;
+    --color: #94A3B8;
+    height: 64px;
+    padding-bottom: 8px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+
+    ion-tab-button {
+        --color: #94A3B8;
+        --color-selected: #2563EB;
+
+        span {
+            font-size: 10px;
+            font-weight: 400;
+        }
+    }
+
+    .tab-active {
+        --color: #2563EB;
+        --color-selected: #2563EB;
+    }
+}
+
 .expense-tab-bar {
     --background: #FFFFFF;
     --border: 1px solid #E2E8F0;
@@ -246,9 +275,4 @@
     --color-selected: #EF4444;
     height: 64px;
     padding-bottom: 8px;
-}
-
-.tab-active-expense {
-    --color-selected: #EF4444;
-    font-weight: 600;
 }

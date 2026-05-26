@@ -27,28 +27,35 @@
             <div class="reports-card">
                 <div class="card-top-row">
                     <p class="card-title">Balance actual</p>
-                    <div class="trend-badge trend-positive">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+                    <div class="trend-badge" [class.trend-positive]="isBalancePositive"
+                        [class.trend-negative]="!isBalancePositive">
+                        <svg *ngIf="isBalancePositive" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="#10B981" stroke-width="2">
                             <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
                         </svg>
-                        <span>+12%</span>
+                        <svg *ngIf="!isBalancePositive" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="#EF4444" stroke-width="2">
+                            <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+                        </svg>
+                        <span>{{ balanceChangeStr }}</span>
                     </div>
                 </div>
-                <p class="balance-big">{{ balance | currency:'COP':'symbol':'1.0-0' }}</p>
+                <p class="balance-big">{{ currentBalance | currency:'COP':'symbol':'1.0-0' }}</p>
             </div>
 
             <div class="reports-card">
                 <div class="card-top-row">
-                    <p class="card-title">Evolución mensual</p>
+                    <p class="card-title">Evolución {{ selectedPeriod === 'Semanal' ? 'semanal' : (selectedPeriod ===
+                        'Mensual' ? 'mensual' : 'anual') }}</p>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-bar-group" *ngFor="let item of monthlyData">
+                    <div class="chart-bar-group" *ngFor="let item of chartData">
                         <div class="chart-bars-wrapper">
                             <div class="chart-bar bar-income" [style.height.%]="(item.income / maxIncome) * 100"></div>
                             <div class="chart-bar bar-expense" [style.height.%]="(item.expense / maxIncome) * 100">
                             </div>
                         </div>
-                        <span class="chart-bar-label">{{ item.month }}</span>
+                        <span class="chart-bar-label">{{ item.label }}</span>
                     </div>
                 </div>
                 <div class="chart-legend">
@@ -70,7 +77,8 @@
                         <div class="donut-chart" [style.background]="donutGradient"></div>
                         <div class="donut-center">
                             <span class="donut-center-label">Total</span>
-                            <span class="donut-center-value">{{ totalExpense | currency:'COP':'symbol':'1.0-0' }}</span>
+                            <span class="donut-center-value">{{ currentExpense | currency:'COP':'symbol':'1.0-0'
+                                }}</span>
                         </div>
                     </div>
                     <div class="donut-legend">
@@ -88,7 +96,8 @@
             <!-- Comparación -->
             <div class="reports-card">
                 <div class="card-top-row">
-                    <p class="card-title">Comparación mensual</p>
+                    <p class="card-title">Comparación {{ selectedPeriod === 'Semanal' ? 'semanal' : (selectedPeriod ===
+                        'Mensual' ? 'mensual' : 'anual') }}</p>
                 </div>
                 <div class="comparison-list">
                     <div class="comparison-row" *ngFor="let stat of comparisonStats">
@@ -131,10 +140,29 @@
     </div>
 </ion-content>
 
-<ion-tab-bar class="reports-tab-bar" slot="bottom">
-    <ion-tab-button (click)="goToDashboard()">Inicio</ion-tab-button>
-    <ion-tab-button (click)="goToIncome()">Ingresos</ion-tab-button>
-    <ion-tab-button (click)="goToExpense()">Gastos</ion-tab-button>
-    <ion-tab-button (click)="goToCategories()">Categorías</ion-tab-button>
-    <ion-tab-button (click)="goToSettings()">Más</ion-tab-button>
+<ion-tab-bar class="dashboard-tab-bar" slot="bottom">
+    <ion-tab-button (click)="goToDashboard()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg><span>Inicio</span></ion-tab-button>
+    <ion-tab-button (click)="goToIncome()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path d="M12 4v16m8-8H4" />
+        </svg><span>Ingresos</span></ion-tab-button>
+    <ion-tab-button (click)="goToExpense()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path d="M20 12H4" />
+        </svg><span>Gastos</span></ion-tab-button>
+    <ion-tab-button (click)="goToCategories()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg><span>Categorías</span></ion-tab-button>
+    <ion-tab-button (click)="goToSettings()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <circle cx="12" cy="12" r="3" />
+        </svg><span>Más</span></ion-tab-button>
 </ion-tab-bar>

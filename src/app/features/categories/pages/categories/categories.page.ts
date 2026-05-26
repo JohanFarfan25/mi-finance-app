@@ -5,7 +5,6 @@ import { CategoryService } from '../../../../core/services/category.service';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../../core/models/user';
-import { Category } from '../../../../core/models/category';
 import { CategoryFormModalComponent } from '../../components/category-form-modal/category-form-modal.component';
 
 interface CategoryDisplay {
@@ -83,7 +82,8 @@ export class CategoriesPage implements OnInit {
             if (result.data) {
                 const newCat = { ...result.data, userId: this.currentUser!.id, isDefault: false };
                 await this.categoryService.addCategory(newCat);
-                this.loadData();
+                // Recargar la página para evitar problemas de foco
+                window.location.reload();
             }
         });
         await modal.present();
@@ -99,7 +99,7 @@ export class CategoriesPage implements OnInit {
         modal.onDidDismiss().then(async (result) => {
             if (result.data) {
                 await this.categoryService.updateCategory(cat.id, result.data);
-                this.loadData();
+                window.location.reload();
             }
         });
         await modal.present();
@@ -114,7 +114,7 @@ export class CategoriesPage implements OnInit {
             {
                 text: 'Eliminar', handler: async () => {
                     await this.categoryService.deleteCategory(id);
-                    this.loadData();
+                    window.location.reload();
                 }
             }
         ];
@@ -130,5 +130,10 @@ export class CategoriesPage implements OnInit {
         alert('Búsqueda de categorías (próximamente)');
     }
 
-    goBack() { window.location.href = '/dashboard'; }
+
+    goToDashboard() { window.location.href = '/dashboard'; }
+    goToIncome() { window.location.href = '/income'; }
+    goToExpense() { window.location.href = '/expense'; }
+    goToCategories() { window.location.href = '/categories'; }
+    goToSettings() { window.location.href = '/settings'; }
 }

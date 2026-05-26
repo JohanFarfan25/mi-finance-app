@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
@@ -15,7 +15,6 @@ export class CategoryFormModalComponent implements OnInit {
   @Input() category?: Category;
   @Input() isEdit = false;
 
-  // Inicializamos con valores por defecto para evitar undefined en el HTML
   categoryData = {
     name: '',
     icon: 'pricetag-outline',

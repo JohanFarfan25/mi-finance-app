@@ -29,6 +29,9 @@ export const routes: Routes = [
     path: 'expense', loadComponent: () => import('./features/transactions/pages/expense/expense.page').then(m => m.ExpensePage), canActivate: [AuthGuard]
   },
   {
+    path: 'transactions', loadComponent: () => import('./features/transactions/pages/transaction-list/transaction-list.page').then(m => m.TransactionListPage), canActivate: [AuthGuard]
+  },
+  {
     path: 'categories', loadComponent: () => import('./features/categories/pages/categories/categories.page').then(m => m.CategoriesPage), canActivate: [AuthGuard]
   },
   {

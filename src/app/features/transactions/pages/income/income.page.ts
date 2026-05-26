@@ -108,6 +108,7 @@ export class IncomePage implements OnInit {
     goBack() { window.location.href = '/dashboard'; }
     goToDashboard() { window.location.href = '/dashboard'; }
     goToExpense() { window.location.href = '/expense'; }
+    goToIncome() { window.location.href = '/income'; }
     goToCategories() { window.location.href = '/categories'; }
     goToSettings() { window.location.href = '/settings'; }
 }
