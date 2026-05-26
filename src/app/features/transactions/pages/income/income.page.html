@@ -1,0 +1,135 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Nuevo Ingreso</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="goToSettings()">
+                <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="income-content">
+    <div class="income-wrapper">
+        <div class="income-body">
+
+            <div class="income-amount-section">
+                <p class="income-section-label">Monto</p>
+                <div class="income-amount-display">
+                    <span class="income-currency">$</span>
+                    <span class="income-amount-value">{{ formattedAmount }}</span>
+                </div>
+                <input type="number" class="income-amount-input" [(ngModel)]="amount" (input)="formatAmount()"
+                    placeholder="0" inputmode="numeric" />
+                <div class="income-amount-line"></div>
+            </div>
+
+
+            <div class="income-field">
+                <label class="income-label">Categoría</label>
+                <div class="income-select-wrapper" (click)="showCategoryPicker()">
+                    <div class="income-select-left">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        <span class="income-select-text" [class.text-filled]="selectedCategoryName">
+                            {{ selectedCategoryName || 'Seleccionar categoría' }}
+                        </span>
+                    </div>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                        <path d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                <div class="income-chips">
+                    <div class="income-chip" *ngFor="let cat of incomeCategories"
+                        [class.chip-selected]="selectedCategoryId === cat.id"
+                        (click)="selectCategory(cat.id, cat.name)">
+                        <ion-icon [name]="cat.icon" style="font-size: 14px;" [style.color]="cat.color"></ion-icon>
+                        <span class="income-chip-text">{{ cat.name }}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="income-field">
+                <label class="income-label">Fecha</label>
+                <div class="income-select-wrapper" (click)="openDatePicker()">
+                    <div class="income-select-left">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        <span class="income-select-text text-filled">{{ formattedDate }}</span>
+                    </div>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                        <path d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+
+
+            <div class="income-field">
+                <label class="income-label">Descripción</label>
+                <textarea class="income-textarea" [(ngModel)]="description"
+                    placeholder="Agregar notas sobre este ingreso..." rows="3"></textarea>
+            </div>
+
+
+            <div class="income-toggle-card">
+                <div class="income-toggle-info">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10" />
+                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
+                    </svg>
+                    <div>
+                        <p class="income-toggle-title">Ingreso recurrente</p>
+                        <p class="income-toggle-subtitle">Se repite cada mes</p>
+                    </div>
+                </div>
+                <button class="income-toggle" [class.toggle-active]="isRecurring" (click)="isRecurring = !isRecurring">
+                    <div class="income-toggle-knob"></div>
+                </button>
+            </div>
+
+            <button class="income-save-btn" (click)="saveIncome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                </svg>
+                Guardar Ingreso
+            </button>
+        </div>
+    </div>
+</ion-content>
+
+<ion-tab-bar class="income-tab-bar" slot="bottom">
+    <ion-tab-button (click)="goToDashboard()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg><span>Inicio</span></ion-tab-button>
+    <ion-tab-button class="tab-active-income"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path d="M12 4v16m8-8H4" />
+        </svg><span>Ingresos</span></ion-tab-button>
+    <ion-tab-button (click)="goToExpense()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path d="M20 12H4" />
+        </svg><span>Gastos</span></ion-tab-button>
+    <ion-tab-button (click)="goToCategories()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg><span>Categorías</span></ion-tab-button>
+    <ion-tab-button (click)="goToSettings()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8">
+            <path
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <circle cx="12" cy="12" r="3" />
+        </svg><span>Más</span></ion-tab-button>
+</ion-tab-bar>

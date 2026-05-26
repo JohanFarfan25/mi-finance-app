@@ -1,0 +1,140 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Reportes</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="goToSettings()">
+                <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="reports-content">
+    <div class="reports-wrapper">
+        <div class="reports-header">
+            <div class="reports-period-selector">
+                <button class="period-btn" [class.period-active]="selectedPeriod === 'Semanal'"
+                    (click)="selectPeriod('Semanal')">Semanal</button>
+                <button class="period-btn" [class.period-active]="selectedPeriod === 'Mensual'"
+                    (click)="selectPeriod('Mensual')">Mensual</button>
+                <button class="period-btn" [class.period-active]="selectedPeriod === 'Anual'"
+                    (click)="selectPeriod('Anual')">Anual</button>
+            </div>
+        </div>
+        <div class="reports-body">
+            <div class="reports-card">
+                <div class="card-top-row">
+                    <p class="card-title">Balance actual</p>
+                    <div class="trend-badge trend-positive">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        </svg>
+                        <span>+12%</span>
+                    </div>
+                </div>
+                <p class="balance-big">{{ balance | currency:'COP':'symbol':'1.0-0' }}</p>
+            </div>
+
+            <div class="reports-card">
+                <div class="card-top-row">
+                    <p class="card-title">Evolución mensual</p>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar-group" *ngFor="let item of monthlyData">
+                        <div class="chart-bars-wrapper">
+                            <div class="chart-bar bar-income" [style.height.%]="(item.income / maxIncome) * 100"></div>
+                            <div class="chart-bar bar-expense" [style.height.%]="(item.expense / maxIncome) * 100">
+                            </div>
+                        </div>
+                        <span class="chart-bar-label">{{ item.month }}</span>
+                    </div>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot dot-blue"></div><span>Ingresos</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot dot-red"></div><span>Gastos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reports-card">
+                <div class="card-top-row">
+                    <p class="card-title">Gastos por categoría</p>
+                </div>
+                <div class="donut-section">
+                    <div class="donut-wrapper">
+                        <div class="donut-chart" [style.background]="donutGradient"></div>
+                        <div class="donut-center">
+                            <span class="donut-center-label">Total</span>
+                            <span class="donut-center-value">{{ totalExpense | currency:'COP':'symbol':'1.0-0' }}</span>
+                        </div>
+                    </div>
+                    <div class="donut-legend">
+                        <div class="donut-legend-item" *ngFor="let cat of categoryBreakdown">
+                            <div class="donut-legend-left">
+                                <div class="donut-legend-dot" [style.backgroundColor]="cat.color"></div>
+                                <span class="donut-legend-name">{{ cat.name }}</span>
+                            </div>
+                            <span class="donut-legend-percent">{{ cat.percentage | number:'1.0-0' }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparación -->
+            <div class="reports-card">
+                <div class="card-top-row">
+                    <p class="card-title">Comparación mensual</p>
+                </div>
+                <div class="comparison-list">
+                    <div class="comparison-row" *ngFor="let stat of comparisonStats">
+                        <span class="comparison-label">{{ stat.label }}</span>
+                        <div class="comparison-right">
+                            <div class="comparison-values">
+                                <p class="comparison-current">{{ stat.current }}</p>
+                                <p class="comparison-previous">{{ stat.previous }}</p>
+                            </div>
+                            <div class="comparison-badge" [class.badge-positive]="stat.positive"
+                                [class.badge-negative]="!stat.positive">
+                                <span>{{ stat.change }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historial -->
+            <div class="reports-card">
+                <div class="card-top-row">
+                    <p class="card-title">Historial de balances</p>
+                </div>
+                <div class="history-list">
+                    <div class="history-row" *ngFor="let h of historyData; let last = last" [class.history-last]="last">
+                        <span class="history-month">{{ h.month }}</span>
+                        <div class="history-right">
+                            <span class="history-balance">{{ h.balance }}</span>
+                            <svg class="history-trend" [class.trend-up]="h.trend === 'up'"
+                                [class.trend-down]="h.trend === 'down'" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline *ngIf="h.trend === 'up'" points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                                <polyline *ngIf="h.trend === 'down'" points="23 18 13.5 8.5 8.5 13.5 1 6" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>
+
+<ion-tab-bar class="reports-tab-bar" slot="bottom">
+    <ion-tab-button (click)="goToDashboard()">Inicio</ion-tab-button>
+    <ion-tab-button (click)="goToIncome()">Ingresos</ion-tab-button>
+    <ion-tab-button (click)="goToExpense()">Gastos</ion-tab-button>
+    <ion-tab-button (click)="goToCategories()">Categorías</ion-tab-button>
+    <ion-tab-button (click)="goToSettings()">Más</ion-tab-button>
+</ion-tab-bar>

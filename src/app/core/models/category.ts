@@ -6,8 +6,9 @@ export interface Category {
     id: string;
     name: string;
     icon: string;
+    color: string;
     type: 'income' | 'expense';
     isDefault: boolean;
     userId: string;
-    createdAt: string;
+    createdAt: Date;
 }

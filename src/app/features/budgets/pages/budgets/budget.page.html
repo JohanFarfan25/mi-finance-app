@@ -1,0 +1,123 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Presupuestos</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="goToSettings()">
+                <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="budget-content">
+    <div class="budget-wrapper">
+        <div class="budget-header">
+            <div class="budget-header-row">
+                <h1 class="budget-title"></h1>
+                <button class="budget-add-btn" (click)="createBudget()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="budget-month-selector">
+                <button class="month-arrow" (click)="prevMonth()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                        <path d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <span class="month-label">{{ selectedMonthLabel }}</span>
+                <button class="month-arrow" (click)="nextMonth()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                        <path d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="budget-body">
+            <div class="budget-summary-card">
+                <div class="summary-header">
+                    <p class="summary-label">Presupuesto Total</p>
+                    <div class="summary-badge"><span class="summary-badge-text">{{ totalPercentage }}%</span></div>
+                </div>
+                <div class="summary-amounts">
+                    <div class="summary-amount-block">
+                        <p class="summary-amount-label">Gastado</p>
+                        <p class="summary-amount">{{ totalSpent | currency:'COP':'symbol':'1.0-0' }}</p>
+                    </div>
+                    <div class="summary-amount-block block-right">
+                        <p class="summary-amount-label">Disponible</p>
+                        <p class="summary-amount">{{ totalRemaining | currency:'COP':'symbol':'1.0-0' }}</p>
+                    </div>
+                </div>
+                <div class="summary-progress-track">
+                    <div class="summary-progress-fill" [style.width.%]="totalPercentage"></div>
+                </div>
+            </div>
+
+            <div class="budget-alert" *ngIf="overBudgetItems.length > 0">
+                <div class="alert-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                </div>
+                <div class="alert-content">
+                    <p class="alert-title">¡Alerta de presupuesto!</p>
+                    <p class="alert-text">
+                        <ng-container *ngFor="let item of overBudgetItems; let last = last">
+                            {{ item.name }} excedió el límite en {{ item.excess | currency:'COP':'symbol':'1.0-0'
+                            }}<ng-container *ngIf="!last">, </ng-container>
+                        </ng-container>
+                    </p>
+                </div>
+            </div>
+
+            <div class="budget-list">
+                <div class="budget-card" *ngFor="let budget of budgets" (click)="viewBudgetDetail(budget)">
+                    <div class="budget-card-top">
+                        <div class="budget-card-info">
+                            <div class="budget-card-icon" [style.backgroundColor]="budget.color + '20'">
+                                <ion-icon [name]="budget.icon" style="font-size: 18px;"
+                                    [style.color]="budget.color"></ion-icon>
+                            </div>
+                            <div class="budget-card-text">
+                                <p class="budget-card-name">{{ budget.name }}</p>
+                                <p class="budget-card-detail">{{ budget.spent | currency:'COP':'symbol':'1.0-0' }} de {{
+                                    budget.limit | currency:'COP':'symbol':'1.0-0' }}</p>
+                            </div>
+                        </div>
+                        <div class="budget-percentage-badge" [class.badge-danger]="budget.percentage >= 100"
+                            [class.badge-warning]="budget.percentage >= 80 && budget.percentage < 100"
+                            [class.badge-safe]="budget.percentage < 80">
+                            <span>{{ budget.percentage }}%</span>
+                        </div>
+                    </div>
+                    <div class="budget-progress-track">
+                        <div class="budget-progress-fill" [style.width.%]="Math.min(budget.percentage, 100)"
+                            [class.progress-danger]="budget.percentage >= 100"
+                            [class.progress-warning]="budget.percentage >= 80 && budget.percentage < 100"
+                            [class.progress-safe]="budget.percentage < 80"></div>
+                    </div>
+                    <div class="budget-card-footer">
+                        <span class="budget-remaining">Restante: {{ budget.remaining | currency:'COP':'symbol':'1.0-0'
+                            }}</span>
+                        <span class="budget-exceeded" *ngIf="budget.percentage >= 100">Excedido</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>
+
+<ion-tab-bar class="budget-tab-bar" slot="bottom">
+    <ion-tab-button (click)="goToDashboard()">Inicio</ion-tab-button>
+    <ion-tab-button (click)="goToIncome()">Ingresos</ion-tab-button>
+    <ion-tab-button (click)="goToExpense()">Gastos</ion-tab-button>
+    <ion-tab-button (click)="goToCategories()">Categorías</ion-tab-button>
+    <ion-tab-button (click)="goToSettings()">Más</ion-tab-button>
+</ion-tab-bar>

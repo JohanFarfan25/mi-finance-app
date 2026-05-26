@@ -4,11 +4,12 @@
  */
 export interface Transaction {
     id: string;
+    userId: string;
     type: 'income' | 'expense';
     amount: number;
     categoryId: string;
     description: string;
     date: Date;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 }

@@ -1,0 +1,156 @@
+<ion-header class="dashboard-header">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+
+        <ion-title>
+            <div class="greeting-container">
+                <p class="greeting-label">Hola,</p>
+                <p class="greeting-name">{{ userName }}</p>
+            </div>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="openNotifications()" fill="clear">
+                <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button (click)="goToSettings()" fill="clear">
+                <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <div class="dashboard-balance-card">
+        <p class="dashboard-balance-label">Balance General</p>
+        <p class="dashboard-balance-amount">{{ balance | currency:currencyCode:'symbol':'1.0-0' }}</p>
+        <div class="dashboard-balance-stats">
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-icon stat-income">
+                    <ion-icon name="trending-up"></ion-icon>
+                </div>
+                <div class="dashboard-stat-info">
+                    <p class="dashboard-stat-label">Ingresos</p>
+                    <p class="dashboard-stat-value">{{ totalIncome | currency:currencyCode:'symbol':'1.0-0' }}</p>
+                </div>
+            </div>
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-icon stat-expense">
+                    <ion-icon name="trending-down"></ion-icon>
+                </div>
+                <div class="dashboard-stat-info">
+                    <p class="dashboard-stat-label">Gastos</p>
+                    <p class="dashboard-stat-value">{{ totalExpense | currency:currencyCode:'symbol':'1.0-0' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-header>
+
+<ion-content class="dashboard-content">
+    <div class="dashboard-body">
+        <div class="dashboard-quick-actions">
+            <button class="quick-action-btn" *ngFor="let action of quickActions" (click)="onAction(action.id)">
+                <div class="quick-action-icon" [style.backgroundColor]="action.bg"
+                    [style.borderColor]="action.color + '20'">
+                    <ion-icon [name]="action.iconName" [style.color]="action.color"></ion-icon>
+                </div>
+                <span class="quick-action-label">{{ action.label }}</span>
+            </button>
+        </div>
+
+        <div class="dashboard-stats-grid">
+            <div class="dashboard-stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-dot dot-green"></div>
+                    <span class="stat-card-label">Ahorro mes</span>
+                </div>
+                <p class="stat-card-amount">{{ savingsAmount | currency:currencyCode:'symbol':'1.0-0' }}</p>
+                <div class="stat-card-trend trend-positive">
+                    <ion-icon name="trending-up" color="success"></ion-icon>
+                    <span>+12% vs mes anterior</span>
+                </div>
+            </div>
+            <div class="dashboard-stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-dot dot-amber"></div>
+                    <span class="stat-card-label">Gasto diario</span>
+                </div>
+                <p class="stat-card-amount">{{ dailyExpense | currency:currencyCode:'symbol':'1.0-0' }}</p>
+                <div class="stat-card-trend trend-negative">
+                    <ion-icon name="trending-down" color="warning"></ion-icon>
+                    <span>-5% vs promedio</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-chart-card">
+            <div class="dashboard-chart-header">
+                <p class="dashboard-chart-title">Resumen Semanal</p>
+                <span class="dashboard-chart-link" (click)="goToReports()">Ver más</span>
+            </div>
+            <div class="dashboard-chart">
+                <div class="chart-bar-group" *ngFor="let day of weeklyData">
+                    <div class="chart-bars">
+                        <div class="chart-bar bar-income" [style.height.%]="day.income"></div>
+                        <div class="chart-bar bar-expense" [style.height.%]="day.expense"></div>
+                    </div>
+                    <span class="chart-day-label">{{ day.day }}</span>
+                </div>
+            </div>
+            <div class="dashboard-chart-legend">
+                <div class="legend-item">
+                    <div class="legend-dot dot-blue"></div><span>Ingresos</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot dot-red"></div><span>Gastos</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-movements">
+            <div class="movements-header">
+                <p class="movements-title">Últimos Movimientos</p>
+                <span class="movements-link" (click)="goToAllMovements()">Ver todos</span>
+            </div>
+            <div class="movements-list">
+                <div class="movement-item" *ngFor="let item of recentMovements">
+                    <div class="movement-icon" [style.backgroundColor]="item.categoryColor + '20'">
+                        <ion-icon [name]="item.categoryIcon" [style.color]="item.categoryColor"></ion-icon>
+                    </div>
+                    <div class="movement-info">
+                        <p class="movement-name">{{ item.description }}</p>
+                        <p class="movement-detail">{{ item.categoryName }} &bull; {{ item.date | date:'dd/MM/yyyy' }}
+                        </p>
+                    </div>
+                    <p class="movement-amount" [class.amount-positive]="item.type === 'income'"
+                        [class.amount-negative]="item.type === 'expense'">
+                        {{ item.type === 'income' ? '+' : '-' }}{{ item.amount | currency:currencyCode:'symbol':'1.0-0'
+                        }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>
+
+<ion-tab-bar class="dashboard-tab-bar" slot="bottom">
+    <ion-tab-button (click)="goToDashboard()">
+        <ion-icon name="home-outline"></ion-icon>
+        <span>Inicio</span>
+    </ion-tab-button>
+    <ion-tab-button (click)="goToIncome()">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <span>Ingresos</span>
+    </ion-tab-button>
+    <ion-tab-button (click)="goToExpense()">
+        <ion-icon name="remove-circle-outline"></ion-icon>
+        <span>Gastos</span>
+    </ion-tab-button>
+    <ion-tab-button (click)="goToCategories()">
+        <ion-icon name="grid-outline"></ion-icon>
+        <span>Categorías</span>
+    </ion-tab-button>
+    <ion-tab-button (click)="goToSettings()">
+        <ion-icon name="settings-outline"></ion-icon>
+        <span>Más</span>
+    </ion-tab-button>
+</ion-tab-bar>

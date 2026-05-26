@@ -1,0 +1,19 @@
+.category-form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 4px;
+}
+
+ion-item {
+    margin-bottom: 16px;
+    --border-radius: 14px;
+    --background: #F8FAFC;
+    --border-color: #CBD5E1;
+}
+
+ion-button {
+    margin-top: 24px;
+    --border-radius: 16px;
+    height: 52px;
+    font-weight: 600;
+}
