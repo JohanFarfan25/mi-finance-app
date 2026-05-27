@@ -62,8 +62,8 @@
                         <p class="alert-title">¡Alerta de presupuesto!</p>
                         <p class="alert-text">
                             <ng-container *ngFor="let item of overBudgetItems; let last = last">
-                                {{ item.name }} excedió el límite en {{ item.excess | currency:'COP':'symbol':'1.0-0'
-                                }}<ng-container *ngIf="!last">, </ng-container>
+                                {{ item.name }} excedió el límite en {{ item.excess | currency:'COP':'symbol':'1.0-0' }}
+                                <ng-container *ngIf="!last">, </ng-container>
                             </ng-container>
                         </p>
                     </div>

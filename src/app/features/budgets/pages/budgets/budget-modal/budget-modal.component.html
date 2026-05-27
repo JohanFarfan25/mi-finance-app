@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ mode === 'create' ? 'Nuevo presupuesto' : 'Editar presupuesto' }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">Cerrar</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <ion-list>
+        <ion-list-header *ngIf="mode === 'create'">
+            <ion-label>Selecciona una categoría</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let cat of availableCategories" button="true" (click)="selectCategory(cat.id)"
+            [class.item-selected]="selectedCategoryId === cat.id">
+            <ion-icon [name]="cat.icon" slot="start" [style.color]="cat.color"></ion-icon>
+            <ion-label>{{ cat.name }}</ion-label>
+            <ion-radio slot="end" [value]="cat.id" [checked]="selectedCategoryId === cat.id"
+                (click)="$event.stopPropagation()"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Límite mensual</ion-label>
+            <ion-input type="number" [(ngModel)]="limit" placeholder="Ej: 500000"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" (click)="save()" class="ion-margin-top">
+        {{ mode === 'create' ? 'Crear' : 'Actualizar' }}
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" color="danger" (click)="deleteBudget()" *ngIf="mode === 'edit'">
+        Eliminar presupuesto
+    </ion-button>
+</ion-content>

@@ -1,18 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { BudgetService } from '../../../../core/services/budget.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../../core/models/user';
 import { Budget } from '../../../../core/models/budget';
+import { BudgetModalComponent } from './budget-modal/budget-modal.component';
 
 interface BudgetDisplay {
-    id: string; categoryId: string; name: string; icon: string; color: string;
-    spent: number; limit: number; percentage: number; remaining: number; excess: number;
+    id: string;
+    categoryId: string;
+    name: string;
+    icon: string;
+    color: string;
+    spent: number;
+    limit: number;
+    percentage: number;
+    remaining: number;
+    excess: number;
 }
-
 
 @Component({
     selector: 'app-budget',
@@ -35,12 +43,26 @@ export class BudgetPage implements OnInit {
         private budgetService: BudgetService,
         private categoryService: CategoryService,
         private transactionService: TransactionService,
-        private authService: AuthService
+        private authService: AuthService,
+        private modalController: ModalController,
+        private alertController: AlertController
     ) { }
 
     async ngOnInit() {
         this.currentUser = await this.authService.getCurrentUser();
-        if (this.currentUser) await this.loadData();
+        if (this.currentUser) {
+            await this.loadCategories();
+            await this.loadData();
+        }
+    }
+
+    async loadCategories() {
+        let cats = await this.categoryService.getCategories(this.currentUser!.id);
+        if (cats.length === 0) {
+            await this.categoryService.createDefaultCategories(this.currentUser!.id);
+            cats = await this.categoryService.getCategories(this.currentUser!.id);
+        }
+        this.categories = cats;
     }
 
     async loadData() {
@@ -52,13 +74,12 @@ export class BudgetPage implements OnInit {
             const d = new Date(tx.date);
             return d >= start && d <= end;
         });
-        let cats = await this.categoryService.getCategories(this.currentUser.id);
-        if (cats.length === 0) {
-            await this.categoryService.createDefaultCategories(this.currentUser.id);
-            cats = await this.categoryService.getCategories(this.currentUser.id);
-        }
-        this.categories = cats;
-        let budgets = await this.budgetService.getBudgetsByMonth(this.currentUser.id, this.selectedMonth, this.selectedYear);
+
+        const budgets = await this.budgetService.getBudgetsByMonth(
+            this.currentUser.id,
+            this.selectedMonth,
+            this.selectedYear
+        );
         this.budgets = await this.buildBudgetDisplays(budgets);
     }
 
@@ -67,12 +88,21 @@ export class BudgetPage implements OnInit {
         for (const b of budgets) {
             const cat = this.categories.find(c => c.id === b.categoryId);
             if (!cat) continue;
-            const spent = this.allTransactions.filter(tx => tx.categoryId === b.categoryId && tx.type === 'expense').reduce((s, t) => s + t.amount, 0);
+            const spent = this.allTransactions
+                .filter(tx => tx.categoryId === b.categoryId && tx.type === 'expense')
+                .reduce((s, t) => s + t.amount, 0);
             const percentage = b.limit > 0 ? (spent / b.limit) * 100 : 0;
             displays.push({
-                id: b.id, categoryId: b.categoryId, name: cat.name, icon: cat.icon, color: cat.color,
-                spent, limit: b.limit, percentage: Math.round(percentage),
-                remaining: Math.max(0, b.limit - spent), excess: spent > b.limit ? spent - b.limit : 0
+                id: b.id,
+                categoryId: b.categoryId,
+                name: cat.name,
+                icon: cat.icon,
+                color: cat.color,
+                spent,
+                limit: b.limit,
+                percentage: Math.round(percentage),
+                remaining: Math.max(0, b.limit - spent),
+                excess: spent > b.limit ? spent - b.limit : 0
             });
         }
         return displays;
@@ -86,27 +116,94 @@ export class BudgetPage implements OnInit {
     get overBudgetItems() { return this.budgets.filter(b => b.excess > 0); }
 
     prevMonth() {
-        if (this.selectedMonth === 0) { this.selectedMonth = 11; this.selectedYear--; }
-        else { this.selectedMonth--; }
+        if (this.selectedMonth === 0) {
+            this.selectedMonth = 11;
+            this.selectedYear--;
+        } else {
+            this.selectedMonth--;
+        }
         this.loadData();
     }
+
     nextMonth() {
-        if (this.selectedMonth === 11) { this.selectedMonth = 0; this.selectedYear++; }
-        else { this.selectedMonth++; }
+        if (this.selectedMonth === 11) {
+            this.selectedMonth = 0;
+            this.selectedYear++;
+        } else {
+            this.selectedMonth++;
+        }
         this.loadData();
     }
+
     async createBudget() {
-        const catId = prompt('ID de categoría (consola para ver ids)'); if (!catId) return;
-        const limit = parseFloat(prompt('Límite mensual:') || '0'); if (isNaN(limit)) return;
-        await this.budgetService.addBudget({ userId: this.currentUser!.id, categoryId: catId, month: this.selectedMonth, year: this.selectedYear, limit });
-        this.loadData();
+        const modal = await this.modalController.create({
+            component: BudgetModalComponent,
+            componentProps: {
+                categories: this.categories,
+                existingBudgets: this.budgets,
+                mode: 'create'
+            }
+        });
+        modal.onDidDismiss().then(async (result) => {
+            if (result.data && result.data.budget) {
+                await this.budgetService.addBudget({
+                    userId: this.currentUser!.id,
+                    categoryId: result.data.budget.categoryId,
+                    month: this.selectedMonth,
+                    year: this.selectedYear,
+                    limit: result.data.budget.limit
+                });
+                await this.loadData();
+            }
+        });
+        await modal.present();
     }
-    viewBudgetDetail(budget: BudgetDisplay) { alert(`Detalle de ${budget.name}`); }
+
+    async editBudget(budget: BudgetDisplay) {
+        const modal = await this.modalController.create({
+            component: BudgetModalComponent,
+            componentProps: {
+                categories: this.categories,
+                existingBudgets: this.budgets.filter(b => b.id !== budget.id),
+                mode: 'edit',
+                budgetToEdit: {
+                    id: budget.id,
+                    categoryId: budget.categoryId,
+                    limit: budget.limit
+                }
+            }
+        });
+        modal.onDidDismiss().then(async (result) => {
+            if (result.data && result.data.budget) {
+                const { categoryId, limit } = result.data.budget;
+                if (categoryId !== budget.categoryId) {
+                    await this.budgetService.deleteBudget(budget.id);
+                    await this.budgetService.addBudget({
+                        userId: this.currentUser!.id,
+                        categoryId: categoryId,
+                        month: this.selectedMonth,
+                        year: this.selectedYear,
+                        limit: limit
+                    });
+                } else {
+                    await this.budgetService.updateBudget(budget.id, { limit: limit });
+                }
+                await this.loadData();
+            } else if (result.data && result.data.delete) {
+                await this.budgetService.deleteBudget(budget.id);
+                await this.loadData();
+            }
+        });
+        await modal.present();
+    }
+
+    async viewBudgetDetail(budget: BudgetDisplay) {
+        this.editBudget(budget);
+    }
 
     goToDashboard() { window.location.href = '/dashboard'; }
     goToIncome() { window.location.href = '/income'; }
     goToExpense() { window.location.href = '/expense'; }
-    goToBudgets() { window.location.href = '/budgets'; }
     goToCategories() { window.location.href = '/categories'; }
     goToSettings() { window.location.href = '/settings'; }
 }
