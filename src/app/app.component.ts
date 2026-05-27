@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, IonFooter, IonButton } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, IonFooter, IonButton, IonButtons, MenuController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './features/auth/auth.service';
 import { filter } from 'rxjs';
@@ -11,7 +11,7 @@ import { filter } from 'rxjs';
     imports: [
         IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent,
         IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, IonFooter, IonButton,
-        CommonModule
+        IonButtons, CommonModule
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
@@ -29,7 +29,11 @@ export class AppComponent {
         { title: 'Configuración', icon: 'settings-outline', url: '/settings' }
     ];
 
-    constructor(private router: Router, private authService: AuthService) {
+    constructor(
+        private router: Router,
+        private authService: AuthService,
+        private menuCtrl: MenuController
+    ) {
         this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: any) => {
             this.currentUrl = e.url;
         });
@@ -41,6 +45,10 @@ export class AppComponent {
 
     isActive(url: string): boolean {
         return this.currentUrl === url;
+    }
+
+    closeMenu() {
+        this.menuCtrl.close('main-menu');
     }
 
     logout() {

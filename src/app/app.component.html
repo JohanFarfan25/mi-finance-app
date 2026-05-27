@@ -1,23 +1,33 @@
 <ion-app>
   <ion-menu side="start" menuId="main-menu" contentId="main-content" class="custom-menu">
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar color="primary" class="menu-toolbar">
         <ion-title>My Finance</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeMenu()" class="close-button">
+            <ion-icon slot="icon-only" name="close" class="close-icon"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
     <ion-content>
-      <ion-list>
+      <ion-list class="menu-list">
         <ion-menu-toggle auto-hide="false" *ngFor="let item of menuItems">
-          <ion-item (click)="navigateTo(item.url)" [class.active]="isActive(item.url)">
-            <ion-icon [name]="item.icon" slot="start"></ion-icon>
+          <ion-item (click)="navigateTo(item.url)" [class.active]="isActive(item.url)" class="menu-item">
+            <ion-icon [name]="item.icon" slot="start" class="menu-icon"></ion-icon>
             <ion-label>{{ item.title }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
+
     <ion-footer>
-      <ion-toolbar>
-        <ion-button expand="full" color="danger" (click)="logout()">Cerrar sesión</ion-button>
+      <ion-toolbar class="footer-toolbar">
+        <ion-button expand="full" (click)="logout()" class="logout-button">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          Cerrar sesión
+        </ion-button>
       </ion-toolbar>
     </ion-footer>
   </ion-menu>
