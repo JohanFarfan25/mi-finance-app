@@ -1,9 +1,31 @@
-.active {
-    --background: #EFF6FF;
-    --color: #2563EB;
-    font-weight: 600;
+.custom-menu {
+    --width: 280px;
+    --max-width: 320px;
 }
 
-ion-item {
-    --padding-start: 16px;
+@media (min-width: 1024px) {
+    ion-menu.custom-menu {
+        --width: 300px;
+        --max-width: 350px;
+        left: calc(50% - 500px);
+    }
+}
+
+ion-item.active {
+    --background: rgba(37, 99, 235, 0.1);
+    --color: #2563EB;
+    font-weight: 500;
+}
+
+ion-item.active ion-icon {
+    color: #2563EB;
+}
+
+ion-footer ion-toolbar {
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+}
+
+ion-footer ion-button {
+    margin: 8px 16px;
 }

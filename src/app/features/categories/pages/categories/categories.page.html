@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <div class="categories-container">
+    <div class="limited-container">
         <div class="categories-grid">
             <div class="category-card" *ngFor="let cat of categories">
                 <div class="category-icon" [style.backgroundColor]="cat.backgroundColor">
@@ -36,12 +36,6 @@
                 </div>
             </div>
         </div>
-
-        <ion-fab class="custom-fab" (click)="createCategory()">
-            <ion-fab-button>
-                <ion-icon name="add"></ion-icon>
-            </ion-fab-button>
-        </ion-fab>
     </div>
 </ion-content>
 
@@ -76,3 +70,9 @@
         </svg><span>Más</span>
     </ion-tab-button>
 </ion-tab-bar>
+
+<ion-fab class="custom-fab" slot="fixed" (click)="createCategory()">
+    <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+</ion-fab>

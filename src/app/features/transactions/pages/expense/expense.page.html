@@ -11,87 +11,92 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content class="expense-content">
-    <div class="expense-wrapper">
-        <div class="expense-body">
-            <div class="expense-amount-section">
-                <p class="expense-section-label">Monto</p>
-                <div class="expense-amount-display">
-                    <span class="expense-currency">$</span>
-                    <span class="expense-amount-value">{{ formattedAmount }}</span>
-                </div>
-                <input type="number" class="expense-amount-input" [(ngModel)]="amount" (input)="formatAmount()"
-                    placeholder="0" inputmode="numeric" />
-                <div class="expense-amount-line"></div>
-            </div>
 
-            <div class="expense-field">
-                <label class="expense-label">Categoría</label>
-                <div class="expense-select-wrapper" (click)="showCategoryPicker()">
-                    <div class="expense-select-left">
+<ion-content class="ion-padding">
+    <div class="limited-container">
+        <div class="expense-wrapper">
+            <div class="expense-body">
+                <div class="expense-amount-section">
+                    <p class="expense-section-label">Monto</p>
+                    <div class="expense-amount-display">
+                        <span class="expense-currency">$</span>
+                        <span class="expense-amount-value">{{ formattedAmount }}</span>
+                    </div>
+                    <input type="number" class="expense-amount-input" [(ngModel)]="amount" (input)="formatAmount()"
+                        placeholder="0" inputmode="numeric" />
+                    <div class="expense-amount-line"></div>
+                </div>
+
+                <div class="expense-field">
+                    <label class="expense-label">Categoría</label>
+                    <div class="expense-select-wrapper" (click)="showCategoryPicker()">
+                        <div class="expense-select-left">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8"
+                                stroke-width="2">
+                                <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                            </svg>
+                            <span class="expense-select-text" [class.text-filled]="selectedCategoryName">
+                                {{ selectedCategoryName || 'Seleccionar categoría' }}
+                            </span>
+                        </div>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
-                            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                            <path d="M19 9l-7 7-7-7" />
                         </svg>
-                        <span class="expense-select-text" [class.text-filled]="selectedCategoryName">
-                            {{ selectedCategoryName || 'Seleccionar categoría' }}
-                        </span>
                     </div>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
-                        <path d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-                <div class="expense-chips">
-                    <div class="expense-chip" *ngFor="let cat of expenseCategories"
-                        [class.chip-selected]="selectedCategoryId === cat.id"
-                        (click)="selectCategory(cat.id, cat.name)">
-                        <ion-icon [name]="cat.icon" style="font-size: 14px;" [style.color]="cat.color"></ion-icon>
-                        <span class="expense-chip-text">{{ cat.name }}</span>
+                    <div class="expense-chips">
+                        <div class="expense-chip" *ngFor="let cat of expenseCategories"
+                            [class.chip-selected]="selectedCategoryId === cat.id"
+                            (click)="selectCategory(cat.id, cat.name)">
+                            <ion-icon [name]="cat.icon" style="font-size: 14px;" [style.color]="cat.color"></ion-icon>
+                            <span class="expense-chip-text">{{ cat.name }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="expense-field">
-                <label class="expense-label">Fecha</label>
-                <div class="expense-select-wrapper" (click)="openDatePicker()">
-                    <div class="expense-select-left">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                            <line x1="16" y1="2" x2="16" y2="6" />
-                            <line x1="8" y1="2" x2="8" y2="6" />
-                            <line x1="3" y1="10" x2="21" y2="10" />
+                <div class="expense-field">
+                    <label class="expense-label">Fecha</label>
+                    <div class="expense-select-wrapper" (click)="openDatePicker()">
+                        <div class="expense-select-left">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                            <span class="expense-select-text text-filled">{{ formattedDate }}</span>
+                        </div>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                            <path d="M19 9l-7 7-7-7" />
                         </svg>
-                        <span class="expense-select-text text-filled">{{ formattedDate }}</span>
                     </div>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
-                        <path d="M19 9l-7 7-7-7" />
+                </div>
+
+                <div class="expense-field">
+                    <label class="expense-label">Descripción</label>
+                    <textarea class="expense-textarea" [(ngModel)]="description" placeholder="Describe este gasto..."
+                        rows="3"></textarea>
+                </div>
+
+                <div class="expense-field">
+                    <label class="expense-label">Método de pago</label>
+                    <div class="expense-payment-grid">
+                        <div class="expense-payment-option" *ngFor="let method of paymentMethods"
+                            [class.payment-selected]="selectedPayment === method" (click)="selectPayment(method)">
+                            <span class="payment-label">{{ method }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="expense-save-btn" (click)="saveExpense()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                        <polyline points="17 21 17 13 7 13 7 21" />
+                        <polyline points="7 3 7 8 15 8" />
                     </svg>
-                </div>
+                    Registrar Gasto
+                </button>
             </div>
-
-            <div class="expense-field">
-                <label class="expense-label">Descripción</label>
-                <textarea class="expense-textarea" [(ngModel)]="description" placeholder="Describe este gasto..."
-                    rows="3"></textarea>
-            </div>
-
-            <div class="expense-field">
-                <label class="expense-label">Método de pago</label>
-                <div class="expense-payment-grid">
-                    <div class="expense-payment-option" *ngFor="let method of paymentMethods"
-                        [class.payment-selected]="selectedPayment === method" (click)="selectPayment(method)">
-                        <span class="payment-label">{{ method }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <button class="expense-save-btn" (click)="saveExpense()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
-                    <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
-                    <polyline points="17 21 17 13 7 13 7 21" />
-                    <polyline points="7 3 7 8 15 8" />
-                </svg>
-                Registrar Gasto
-            </button>
         </div>
     </div>
 </ion-content>

@@ -12,52 +12,53 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="transactions-content">
-    <div class="transactions-wrapper">
-
-        <div class="filter-tabs">
-            <button class="filter-tab" [class.active]="selectedFilter === 'all'"
-                (click)="applyFilter('all')">Todos</button>
-            <button class="filter-tab" [class.active]="selectedFilter === 'income'"
-                (click)="applyFilter('income')">Ingresos</button>
-            <button class="filter-tab" [class.active]="selectedFilter === 'expense'"
-                (click)="applyFilter('expense')">Gastos</button>
-        </div>
-
-        <div class="movements-list">
-            <div *ngIf="filteredMovements.length === 0" class="empty-state">
-                <ion-icon name="document-text-outline"></ion-icon>
-                <p>No hay movimientos registrados.</p>
+<ion-content class="ion-padding">
+    <div class="limited-container">
+        <div class="transactions-wrapper">
+            <div class="filter-tabs">
+                <button class="filter-tab" [class.active]="selectedFilter === 'all'"
+                    (click)="applyFilter('all')">Todos</button>
+                <button class="filter-tab" [class.active]="selectedFilter === 'income'"
+                    (click)="applyFilter('income')">Ingresos</button>
+                <button class="filter-tab" [class.active]="selectedFilter === 'expense'"
+                    (click)="applyFilter('expense')">Gastos</button>
             </div>
 
-            <ion-item-sliding *ngFor="let item of filteredMovements">
-                <ion-item lines="none" class="movement-item-container">
-                    <div class="movement-item">
-                        <div class="movement-icon" [style.backgroundColor]="item.categoryColor + '20'">
-                            <ion-icon [name]="item.categoryIcon" [style.color]="item.categoryColor"></ion-icon>
-                        </div>
-                        <div class="movement-info">
-                            <p class="movement-name">{{ item.description }}</p>
-                            <p class="movement-detail">{{ item.categoryName }} &bull; {{ item.date | date:'dd/MM/yyyy'
-                                }}</p>
-                        </div>
-                        <p class="movement-amount" [class.amount-positive]="item.type === 'income'"
-                            [class.amount-negative]="item.type === 'expense'">
-                            {{ item.type === 'income' ? '+' : '-' }}{{ item.amount |
-                            currency:currencyCode:'symbol':'1.0-0' }}
-                        </p>
-                    </div>
-                </ion-item>
+            <div class="movements-list">
+                <div *ngIf="filteredMovements.length === 0" class="empty-state">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <p>No hay movimientos registrados.</p>
+                </div>
 
-                <ion-item-options side="end">
-                    <ion-item-option color="danger" (click)="deleteMovement(item.id)">
-                        <ion-icon slot="icon-only" name="trash"></ion-icon>
-                    </ion-item-option>
-                </ion-item-options>
-            </ion-item-sliding>
+                <ion-item-sliding *ngFor="let item of filteredMovements">
+                    <ion-item lines="none" class="movement-item-container">
+                        <div class="movement-item">
+                            <div class="movement-icon" [style.backgroundColor]="item.categoryColor + '20'">
+                                <ion-icon [name]="item.categoryIcon" [style.color]="item.categoryColor"></ion-icon>
+                            </div>
+                            <div class="movement-info">
+                                <p class="movement-name">{{ item.description }}</p>
+                                <p class="movement-detail">{{ item.categoryName }} &bull; {{ item.date |
+                                    date:'dd/MM/yyyy' }}</p>
+                            </div>
+                            <p class="movement-amount" [class.amount-positive]="item.type === 'income'"
+                                [class.amount-negative]="item.type === 'expense'">
+                                {{ item.type === 'income' ? '+' : '-' }}{{ item.amount |
+                                currency:currencyCode:'symbol':'1.0-0' }}
+                            </p>
+                        </div>
+                    </ion-item>
+                    <ion-item-options side="end">
+                        <ion-item-option color="danger" (click)="deleteMovement(item.id)">
+                            <ion-icon slot="icon-only" name="trash"></ion-icon>
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </div>
         </div>
     </div>
 </ion-content>
+
 
 <ion-tab-bar class="dashboard-tab-bar" slot="bottom">
     <ion-tab-button (click)="goToDashboard()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"

@@ -13,7 +13,6 @@
   --info: #0EA5E9;
 }
 
-/* Estilos generales */
 * {
   margin: 0;
   padding: 0;
@@ -22,52 +21,91 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--background);
 }
 
-/* Estilos para inputs */
 .login-input-wrapper,
 .register-input-wrapper {
-  border: 1.5px solid #CBD5E1 !important;
-  background-color: #F8FAFC !important;
-  border-radius: 14px !important;
-  height: 52px !important;
-  padding: 0 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
+  border: 1.5px solid #CBD5E1;
+  background-color: #F8FAFC;
+  border-radius: 14px;
+  height: 52px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .login-input,
 .register-input {
-  background: transparent !important;
-  border: none !important;
-  outline: none !important;
-  color: #0F172A !important;
-  font-size: 15px !important;
-  width: 100% !important;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #0F172A;
+  font-size: 15px;
+  width: 100%;
 }
 
 .login-input::placeholder,
 .register-input::placeholder {
-  color: #94A3B8 !important;
+  color: #94A3B8;
 }
 
 ion-content {
-  --offset-bottom: 0px !important;
-  --offset-top: 0px !important;
-  --padding-bottom: 16px;
-  --padding-top: 16px;
+  --offset-bottom: 0px;
+  --offset-top: 0px;
   height: 100%;
+}
+
+ion-content::part(scroll) {
+  padding-bottom: 120px !important;
+}
+
+.spacer {
+  height: 80px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  ion-content::part(scroll) {
+    padding-bottom: 140px !important;
+  }
+
+  .spacer {
+    height: 150px;
+  }
 }
 
 ion-tab-bar {
   position: sticky;
   bottom: 0;
   background: white;
+  z-index: 10;
 }
 
-ion-content::part(scroll) {
-  padding-bottom: 80px !important;
+.limited-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  ion-header:not(.auth-header) ion-toolbar {
+    max-width: 900px;
+    /* mismo ancho */
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  ion-tab-bar:not(.auth-tab-bar) {
+    max-width: 900px;
+    /* mismo ancho */
+    margin: 0 auto;
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
 }
 
 .custom-fab {
@@ -77,11 +115,14 @@ ion-content::part(scroll) {
   z-index: 1000;
 }
 
-@media (max-width: 576px) {
-  ion-content::part(scroll) {
-    padding-bottom: 90px !important;
-  }
+@media (min-width: 768px) {
 
+  .custom-fab {
+    right: calc(50% - 450px + 20px) !important;
+  }
+}
+
+@media (max-width: 576px) {
   .custom-fab {
     bottom: 85px !important;
   }
