@@ -85,6 +85,7 @@
 .budget-body {
     flex: 1;
     padding: 16px 16px 80px 16px;
+    margin-top: 16px;
 }
 
 /* ─── Summary Card ─── */
@@ -392,5 +393,19 @@
     .tab-active {
         --color: #2563EB;
         --color-selected: #2563EB;
+    }
+}
+
+.title-section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px 4px;
+
+    h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0F172A;
+        margin: 0;
     }
 }

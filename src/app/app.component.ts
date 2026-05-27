@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, IonFooter, IonButton, IonButtons, MenuController } from '@ionic/angular/standalone';
+import {
+    IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent,
+    IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, IonFooter, IonButton,
+    IonButtons, MenuController, IonMenuButton
+} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './features/auth/auth.service';
 import { filter } from 'rxjs';
@@ -11,7 +15,8 @@ import { filter } from 'rxjs';
     imports: [
         IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent,
         IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, IonFooter, IonButton,
-        IonButtons, CommonModule
+        IonButtons, IonMenuButton,
+        CommonModule
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
@@ -40,7 +45,8 @@ export class AppComponent {
     }
 
     navigateTo(url: string) {
-        window.location.href = url;
+        this.router.navigateByUrl(url);
+        this.menuCtrl.close('main-menu');
     }
 
     isActive(url: string): boolean {
@@ -53,6 +59,7 @@ export class AppComponent {
 
     logout() {
         this.authService.logout();
-        window.location.href = '/auth/login';
+        this.router.navigateByUrl('/auth/login');
+        this.menuCtrl.close('main-menu');
     }
 }

@@ -41,10 +41,10 @@ export class SettingsPage implements OnInit {
         this.settingsSections = [
             {
                 title: 'Usuario', items: [
-                    { label: 'Perfil', value: this.userName, icon: 'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2', iconBg: '#EFF6FF', iconColor: '#2563EB' },
+                    { label: 'Perfil', value: this.userName, icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zm-4 7a7 7 0 00-7 7h14a7 7 0 00-7-7z', iconBg: '#EFF6FF', iconColor: '#2563EB' },
                     { label: 'Correo', value: this.userEmail, icon: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z', iconBg: '#F1F5F9', iconColor: '#64748B' },
                     { label: 'Moneda', value: this.currency, icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z', iconBg: '#ECFDF5', iconColor: '#059669' },
-                    { label: 'Editar datos personales', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z', iconBg: '#EFF6FF', iconColor: '#2563EB' }
+                    { label: 'Editar datos personales', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z', iconBg: '#EFF6FF', iconColor: '#2563EB', click: () => this.editProfile() }
                 ]
             },
             {
@@ -100,8 +100,18 @@ export class SettingsPage implements OnInit {
     }
 
     async onSettingTap(item: any) {
+
+        if (item.click && typeof item.click === 'function') {
+            item.click();
+            return;
+        }
         if (item.label === 'Cambiar PIN') {
-            window.alert('Funcionalidad en desarrollo'); // ✅ corrige el error de alert
+            const alert = await this.alertCtrl.create({
+                header: 'Cambiar PIN',
+                message: 'Funcionalidad en desarrollo',
+                buttons: ['OK']
+            });
+            await alert.present();
         } else if (item.label === 'Limpiar Datos') {
             const alert = await this.alertCtrl.create({
                 header: 'Limpiar datos',
@@ -109,9 +119,16 @@ export class SettingsPage implements OnInit {
                 buttons: [
                     { text: 'Cancelar', role: 'cancel' },
                     {
-                        text: 'Eliminar', role: 'destructive', handler: async () => {
+                        text: 'Eliminar',
+                        role: 'destructive',
+                        handler: async () => {
                             await this.storage.clear();
-                            window.alert('Datos eliminados. La aplicación se reiniciará.'); // ✅ corrige
+                            const confirm = await this.alertCtrl.create({
+                                header: 'Datos eliminados',
+                                message: 'La aplicación se reiniciará.',
+                                buttons: ['OK']
+                            });
+                            await confirm.present();
                             window.location.href = '/auth/login';
                         }
                     }
@@ -119,7 +136,12 @@ export class SettingsPage implements OnInit {
             });
             await alert.present();
         } else if (item.label === 'Exportar Datos') {
-            window.alert('Próximamente');
+            const alert = await this.alertCtrl.create({
+                header: 'Exportar datos',
+                message: 'Próximamente disponible',
+                buttons: ['OK']
+            });
+            await alert.present();
         }
     }
 

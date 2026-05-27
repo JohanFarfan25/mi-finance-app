@@ -1,20 +1,9 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Configuración</ion-title>
-        <ion-buttons slot="end">
-            <ion-button (click)="logout()">
-                <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
     <div class="limited-container">
         <div class="settings-wrapper">
+            <div class="title-section">
+                <h3>Configuración</h3>
+            </div>
             <div class="settings-body">
                 <div class="profile-card" (click)="editProfile()">
                     <div class="profile-avatar">
@@ -46,8 +35,8 @@
                             </div>
                             <div class="item-right" *ngIf="!item.toggle">
                                 <span class="item-value" *ngIf="item.value">{{ item.value }}</span>
-                                <svg class="item-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                    stroke="#94A3B8" stroke-width="2">
+                                <svg *ngIf="item.click" class="item-chevron" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="#94A3B8" stroke-width="2">
                                     <path d="M9 5l7 7-7 7" />
                                 </svg>
                             </div>

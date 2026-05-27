@@ -1,3 +1,4 @@
+// Estilos del menú lateral
 .custom-menu {
     --width: 280px;
     --max-width: 320px;
@@ -6,6 +7,7 @@
     box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
 }
 
+// Scrollbar personalizado (sutil)
 .custom-menu ::-webkit-scrollbar {
     width: 4px;
 }
@@ -23,6 +25,7 @@
     background: rgba(0, 0, 0, 0.3);
 }
 
+// Toolbar del menú
 .menu-toolbar {
     --padding-start: 16px;
     --padding-end: 8px;
@@ -30,6 +33,7 @@
     --padding-bottom: 12px;
 }
 
+// Botón de cierre (X) visible
 .close-button {
     margin: 0;
     width: 40px;
@@ -81,6 +85,7 @@
     margin-right: 14px;
 }
 
+// Ítem activo
 ion-item.active {
     --background: rgba(37, 99, 235, 0.1);
     --color: #2563eb;
@@ -91,6 +96,7 @@ ion-item.active {
     }
 }
 
+// Footer sin borde
 .footer-toolbar {
     --padding-top: 8px;
     --padding-bottom: 8px;
@@ -98,6 +104,7 @@ ion-item.active {
     border-top: none;
 }
 
+// Botón de cerrar sesión (minimalista)
 .logout-button {
     margin: 12px 16px;
     --background: transparent;
@@ -127,14 +134,5 @@ ion-item.active {
             --background: rgba(220, 38, 38, 0.08);
             transform: translateX(2px);
         }
-    }
-
-    .custom-menu ::-webkit-scrollbar {
-        display: none;
-    }
-
-    .custom-menu {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
     }
 }

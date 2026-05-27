@@ -293,3 +293,17 @@
         --color-selected: #2563EB;
     }
 }
+
+.title-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 4px;
+
+    h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0F172A;
+        margin: 0;
+    }
+}

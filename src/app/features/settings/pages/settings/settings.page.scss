@@ -34,8 +34,8 @@
 .profile-card {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 16px;
+    gap: 8px;
+    padding: 12px;
     background-color: #FFFFFF;
     border-radius: 18px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -66,20 +66,20 @@
 }
 
 .profile-name {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 600;
     color: #0F172A;
     margin: 0;
 }
 
 .profile-email {
-    font-size: 13px;
+    font-size: 12px;
     color: #64748B;
     margin: 0;
 }
 
 .profile-since {
-    font-size: 12px;
+    font-size: 11px;
     color: #94A3B8;
     margin: 2px 0 0 0;
 }
@@ -128,14 +128,16 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
 }
 
 .item-content {
     flex: 1;
     min-width: 0;
+    display: flex;
+    margin-bottom: 30px;
 }
 
 .item-label {
@@ -187,6 +189,7 @@
     align-items: center;
     gap: 4px;
     flex-shrink: 0;
+    margin-top: 14px;
 }
 
 .item-value {
@@ -274,5 +277,19 @@
     .tab-active {
         --color: #2563EB;
         --color-selected: #2563EB;
+    }
+}
+
+.title-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 4px;
+
+    h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0F172A;
+        margin: 0;
     }
 }
