@@ -7,18 +7,18 @@ export class AuthService {
   private readonly USER_KEY = 'currentUser';
   private readonly USERS_KEY = 'registeredUsers';
 
-  constructor(private storage: StorageService) {}
+  constructor(private storage: StorageService) { }
 
   /**
-   * Registra un nuevo usuario.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
-   */
+  * Registra un nuevo usuario.
+  * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
+  */
   async register(
     userData: Omit<User, 'id' | 'pinHash' | 'createdAt'>,
     pin: string,
   ): Promise<User> {
-    if (!pin || pin.length < 4)
-      throw new Error('El PIN debe tener al menos 4 caracteres');
+    if (!pin || pin.length === 0)
+      throw new Error('El PIN no puede estar vacío');
 
     const users = await this.getAllUsers();
     if (userData.email) {
@@ -45,7 +45,6 @@ export class AuthService {
 
   /**
    * Inicia sesión del usuario.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
    */
   async login(pin: string): Promise<boolean> {
     const users = await this.getAllUsers();
@@ -61,7 +60,6 @@ export class AuthService {
 
   /**
    * Cierra sesión del usuario.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
    */
   async logout(): Promise<void> {
     await this.storage.remove(this.USER_KEY);
@@ -69,7 +67,6 @@ export class AuthService {
 
   /**
    * Verifica si el usuario está autenticado.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
    */
   async isAuthenticated(): Promise<boolean> {
     const user = await this.storage.get(this.USER_KEY);
@@ -78,15 +75,36 @@ export class AuthService {
 
   /**
    * Obtiene el usuario actual.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
    */
   async getCurrentUser(): Promise<User | null> {
     return await this.storage.get(this.USER_KEY);
   }
 
   /**
+   * Cambia el PIN del usuario actual.
+   * @param newPin
+   */
+  async changePin(newPin: string): Promise<void> {
+    if (!newPin || newPin.length === 0) {
+      throw new Error('El PIN no puede estar vacío');
+    }
+    const currentUser = await this.getCurrentUser();
+    if (!currentUser) {
+      throw new Error('No hay usuario autenticado');
+    }
+    const newPinHash = await this.hashPin(newPin);
+    currentUser.pinHash = newPinHash;
+    await this.storage.set(this.USER_KEY, currentUser);
+    const users = await this.getAllUsers();
+    const index = users.findIndex(u => u.id === currentUser.id);
+    if (index !== -1) {
+      users[index].pinHash = newPinHash;
+      await this.storage.set(this.USERS_KEY, users);
+    }
+  }
+
+  /**
    * Obtiene todos los usuarios registrados.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
    */
   private async getAllUsers(): Promise<User[]> {
     const users = await this.storage.get(this.USERS_KEY);
@@ -95,7 +113,6 @@ export class AuthService {
 
   /**
    * Genera un hash del PIN.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
    */
   private async hashPin(pin: string): Promise<string> {
     const encoder = new TextEncoder();
@@ -107,7 +124,6 @@ export class AuthService {
 
   /**
    * Verifica si el PIN es correcto.
-   * @author Johan Alexander Farfan Sierra <johanfarfan25@gmail.com>
    */
   private async verifyPin(pin: string, hash: string): Promise<boolean> {
     const pinHash = await this.hashPin(pin);
