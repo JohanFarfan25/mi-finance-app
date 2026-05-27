@@ -23,6 +23,7 @@ import { filter } from 'rxjs';
 })
 export class AppComponent {
     currentUrl = '';
+    showShellHeader = false;
 
     menuItems = [
         { title: 'Inicio', icon: 'home-outline', url: '/dashboard' },
@@ -39,9 +40,16 @@ export class AppComponent {
         private authService: AuthService,
         private menuCtrl: MenuController
     ) {
-        this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: any) => {
-            this.currentUrl = e.url;
+        this.updateShellState(this.router.url);
+
+        this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: NavigationEnd) => {
+            this.updateShellState(e.urlAfterRedirects);
         });
+    }
+
+    private updateShellState(url: string): void {
+        this.currentUrl = url;
+        this.showShellHeader = !url.startsWith('/auth');
     }
 
     navigateTo(url: string) {

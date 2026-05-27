@@ -32,9 +32,9 @@
       </ion-toolbar>
     </ion-footer>
   </ion-menu>
-  <!-- Contenido principal con el botón para abrir el menú -->
+  <!-- Shell: header + outlet (sin ion-content padre: rompe scroll/toques en WebView nativo) -->
   <div class="ion-page" id="main-content">
-    <ion-header>
+    <ion-header class="app-shell-header" *ngIf="showShellHeader">
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-menu-button menu="main-menu"></ion-menu-button>
@@ -42,8 +42,6 @@
         <ion-title>My Finance</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
-      <ion-router-outlet></ion-router-outlet>
-    </ion-content>
+    <ion-router-outlet></ion-router-outlet>
   </div>
 </ion-app>

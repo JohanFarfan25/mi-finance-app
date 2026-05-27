@@ -1,4 +1,4 @@
-<ion-content class="ion-padding">
+<ion-content class="ion-padding has-bottom-tabs">
     <div class="limited-container">
         <div class="budget-wrapper">
             <div class="budget-header">
@@ -105,9 +105,8 @@
             </div>
         </div>
     </div>
-</ion-content>
 
-<ion-tab-bar class="dashboard-tab-bar" slot="bottom">
+    <ion-tab-bar class="dashboard-tab-bar" slot="bottom">
     <ion-tab-button (click)="goToDashboard()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path
@@ -137,4 +136,5 @@
             <circle cx="12" cy="12" r="3" />
         </svg><span>Más</span>
     </ion-tab-button>
-</ion-tab-bar>
+    </ion-tab-bar>
+</ion-content>

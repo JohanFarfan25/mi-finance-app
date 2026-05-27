@@ -67,11 +67,16 @@ body {
 ion-content {
   --offset-bottom: 0px;
   --offset-top: 0px;
-  height: 100%;
 }
 
-ion-content::part(scroll) {
-  padding-bottom: 120px !important;
+/* Solo en páginas con tab bar inferior fijo */
+ion-content.has-bottom-tabs::part(scroll) {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+body.capacitor-native jeep-sqlite {
+  display: none !important;
+  pointer-events: none !important;
 }
 
 .spacer {
@@ -80,20 +85,13 @@ ion-content::part(scroll) {
 }
 
 @media (min-width: 768px) {
-  ion-content::part(scroll) {
-    padding-bottom: 140px !important;
+  ion-content.has-bottom-tabs::part(scroll) {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   }
 
   .spacer {
     height: 150px;
   }
-}
-
-ion-tab-bar {
-  position: sticky;
-  bottom: 0;
-  background: white;
-  z-index: 10;
 }
 
 .limited-container {
