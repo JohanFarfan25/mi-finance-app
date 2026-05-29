@@ -22,8 +22,6 @@ import {
 import { CategoryService } from '../../../../core/services/category.service';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { AuthService } from '../../../auth/auth.service';
-import { DiagnosticService } from '../../../../core/utils/diagnostic.service';
-import { ShadowDomInspectorService } from '../../../../core/utils/shadow-dom-inspector.service';
 import { User } from '../../../../core/models/user';
 import { CategoryFormModalComponent } from '../../components/category-form-modal/category-form-modal.component';
 import { getOverlayPresentingElement } from '../../../../core/utils/overlay.util';
@@ -73,12 +71,9 @@ export class CategoriesPage implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private router: Router,
-    private diagnostic: DiagnosticService,
-    private shadowDomInspector: ShadowDomInspectorService,
   ) {}
 
   async ngOnInit() {
-    this.shadowDomInspector.inspectDOM();
     this.currentUser = await this.authService.getCurrentUser();
     if (this.currentUser) {
       this.currencyCode = this.currentUser.currency;
@@ -132,30 +127,10 @@ export class CategoriesPage implements OnInit {
         backdropDismiss: true,
         presentingElement: presentingElement ?? undefined,
       });
-      createPromise
-        .then((modal) =>
-          this.diagnostic.logToConsole(
-            '[MODAL] create promise resolved',
-            modal,
-          ),
-        )
-        .catch((error) => {
-          this.diagnostic.logToConsole(
-            '[MODAL] create promise rejected',
-            error,
-          );
-        });
       const modal = await createPromise;
-      this.diagnostic.logToConsole('[MODAL] modalCtrl.create() completado');
-
       modal
         .onDidDismiss()
         .then(async (result) => {
-          this.diagnostic.logToConsole(
-            '[MODAL] onDidDismiss ejecutado',
-            result,
-          );
-
           if (result.data && this.currentUser) {
             const newCat = {
               ...result.data,
@@ -165,9 +140,7 @@ export class CategoriesPage implements OnInit {
             await this.categoryService.addCategory(newCat);
             await this.loadData();
           } else {
-            this.diagnostic.logToConsole(
-              '[MODAL] onDidDismiss sin data, operación cancelada',
-            );
+            console.log('[MODAL] onDidDismiss sin data, operación cancelada');
           }
         })
         .catch((error) => {
@@ -188,7 +161,7 @@ export class CategoriesPage implements OnInit {
       );
 
       if (!original) {
-        this.diagnostic.logToConsole('[EDIT] Categoría no encontrada');
+        console.log('[EDIT] Categoría no encontrada');
         return;
       }
 
@@ -201,20 +174,7 @@ export class CategoriesPage implements OnInit {
         backdropDismiss: true,
         presentingElement: presentingElement ?? undefined,
       });
-      createPromise
-        .then((modal) =>
-          this.diagnostic.logToConsole(
-            '[MODAL] edit create promise resolved',
-            modal,
-          ),
-        )
-        .catch((error) => {
-          this.diagnostic.logToConsole(
-            '[MODAL] edit create promise rejected',
-            error,
-          );
-          throw error;
-        });
+      
       const modal = await createPromise;
 
       modal
@@ -225,9 +185,7 @@ export class CategoriesPage implements OnInit {
 
             await this.loadData();
           } else {
-            this.diagnostic.logToConsole(
-              '[EDIT] onDidDismiss sin data, operación cancelada',
-            );
+            console.log('[EDIT] onDidDismiss sin data, operación cancelada');
           }
         })
         .catch((error) => {
@@ -255,9 +213,7 @@ export class CategoriesPage implements OnInit {
               void this.categoryService
                 .deleteCategory(id)
                 .then(() => {
-                  this.diagnostic.logToConsole(
-                    '[DELETE] Categoría eliminada, recargando datos',
-                  );
+                  console.log('[DELETE] Categoría eliminada, recargando datos');
                   this.loadData();
                 })
                 .catch((error) => {

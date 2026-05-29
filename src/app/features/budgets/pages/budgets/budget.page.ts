@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { 
-  ModalController, AlertController, IonHeader, IonToolbar, IonTitle, 
+  ModalController, IonHeader, IonToolbar, IonTitle, 
   IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons,
   IonFab, IonFabButton, IonFooter, IonMenuButton
 } from '@ionic/angular/standalone';
