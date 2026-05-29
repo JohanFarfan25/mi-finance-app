@@ -11,6 +11,9 @@ const config: CapacitorConfig = {
     adjustMarginsForEdgeToEdge: 'force',
   },
   plugins: {
+    Keyboard: {
+      resize: 'body',
+    },
     CapacitorSQLite: {
       iosDatabaseLocation: 'Library/CapacitorDatabase',
       androidIsEncrypted: false,

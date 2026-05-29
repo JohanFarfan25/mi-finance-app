@@ -7,6 +7,7 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './features/auth/auth.service';
+import { AppBottomNavComponent } from './shared/components/app-bottom-nav/app-bottom-nav.component';
 import { filter } from 'rxjs';
 
 @Component({
@@ -16,7 +17,8 @@ import { filter } from 'rxjs';
         IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent,
         IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, IonFooter, IonButton,
         IonButtons, IonMenuButton,
-        CommonModule
+        CommonModule,
+        AppBottomNavComponent,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
@@ -24,6 +26,7 @@ import { filter } from 'rxjs';
 export class AppComponent {
     currentUrl = '';
     showShellHeader = false;
+    showBottomNav = false;
 
     menuItems = [
         { title: 'Inicio', icon: 'home-outline', url: '/dashboard' },
@@ -38,7 +41,7 @@ export class AppComponent {
     constructor(
         private router: Router,
         private authService: AuthService,
-        private menuCtrl: MenuController
+        private menuCtrl: MenuController,
     ) {
         this.updateShellState(this.router.url);
 
@@ -49,7 +52,9 @@ export class AppComponent {
 
     private updateShellState(url: string): void {
         this.currentUrl = url;
-        this.showShellHeader = !url.startsWith('/auth');
+        const isAuthRoute = url.startsWith('/auth');
+        this.showShellHeader = !isAuthRoute;
+        this.showBottomNav = !isAuthRoute;
     }
 
     navigateTo(url: string) {

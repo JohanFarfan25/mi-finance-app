@@ -26,10 +26,24 @@
   --info: #0EA5E9;
 }
 
+:root {
+  --shell-header-height: 56px;
+}
+
+ion-router-outlet > * {
+  padding-top: var(--shell-header-height);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html,
+body,
+ion-app {
+  height: 100%;
 }
 
 body {
@@ -69,9 +83,33 @@ ion-content {
   --offset-top: 0px;
 }
 
-/* Solo en páginas con tab bar inferior fijo */
-ion-content.has-bottom-tabs::part(scroll) {
-  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+/* Páginas con footer de navegación inferior */
+app-dashboard,
+app-income,
+app-expense,
+app-categories,
+app-category-detail,
+app-budget,
+app-reports,
+app-settings,
+app-transaction-list {
+  display: block;
+  height: 100%;
+
+  ion-content {
+    --padding-bottom: 0;
+  }
+}
+
+.ion-page#main-content {
+  app-bottom-nav {
+    flex-shrink: 0;
+  }
+}
+
+ion-modal,
+ion-alert {
+  z-index: 20000;
 }
 
 body.capacitor-native jeep-sqlite {
@@ -85,10 +123,6 @@ body.capacitor-native jeep-sqlite {
 }
 
 @media (min-width: 768px) {
-  ion-content.has-bottom-tabs::part(scroll) {
-    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
-  }
-
   .spacer {
     height: 150px;
   }
@@ -109,13 +143,8 @@ body.capacitor-native jeep-sqlite {
     width: 100%;
   }
 
-  ion-tab-bar:not(.auth-tab-bar) {
+  .app-bottom-nav-row {
     max-width: 900px;
-    /* mismo ancho */
-    margin: 0 auto;
-    width: 100%;
-    left: 0;
-    right: 0;
   }
 }
 

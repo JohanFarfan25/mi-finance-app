@@ -1,6 +1,4 @@
 /**
- * Prevents Angular change detection from
- * running with certain Web Component callbacks
+ * Mantener el parche de Zone para Custom Elements (ion-alert, ion-modal, ion-menu).
+ * Desactivarlo rompe overlays y handlers en WebView nativo.
  */
-// eslint-disable-next-line no-underscore-dangle
-(window as any).__Zone_disable_customElements = true;

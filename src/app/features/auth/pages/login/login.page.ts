@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonInput, IonCheckbox } from '@ionic/angular/standalone';
 import { AuthService } from '../../auth.service';
 
 /**
@@ -11,7 +11,7 @@ import { AuthService } from '../../auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonInput, IonCheckbox],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],

@@ -1,6 +1,6 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonFooter, IonMenuButton } from '@ionic/angular/standalone';
 import { AuthService } from '../../../auth/auth.service';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { CategoryService } from '../../../../core/services/category.service';
@@ -35,7 +35,7 @@ interface MovementItem {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonFooter, IonMenuButton],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],

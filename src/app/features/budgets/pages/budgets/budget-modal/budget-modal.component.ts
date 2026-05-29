@@ -1,16 +1,51 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, ModalController } from '@ionic/angular';
+import {
+  ModalController,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonContent,
+  IonList,
+  IonListHeader,
+  IonLabel,
+  IonIcon,
+  IonRadioGroup,
+  IonItem,
+  IonRadio,
+  IonInput,
+} from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-budget-modal',
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonContent,
+    IonList,
+    IonListHeader,
+    IonLabel,
+    IonIcon,
+    IonRadioGroup,
+    IonItem,
+    IonRadio,
+    IonInput,
+  ],
   template: `
     <ion-header>
       <ion-toolbar>
-        <ion-title>{{ mode === 'create' ? 'Nuevo presupuesto' : 'Editar presupuesto' }}</ion-title>
+        <ion-title>{{
+          mode === 'create' ? 'Nuevo presupuesto' : 'Editar presupuesto'
+        }}</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="dismiss()">Cerrar</ion-button>
         </ion-buttons>
@@ -28,14 +63,22 @@ import { FormsModule } from '@angular/forms';
             (click)="selectCategory(cat.id)"
             [class.item-selected]="selectedCategoryId === cat.id"
           >
-            <ion-icon [name]="cat.icon" slot="start" [style.color]="cat.color"></ion-icon>
+            <ion-icon
+              [name]="cat.icon"
+              slot="start"
+              [style.color]="cat.color"
+            ></ion-icon>
             <ion-label>{{ cat.name }}</ion-label>
             <ion-radio slot="end" [value]="cat.id"></ion-radio>
           </ion-item>
         </ion-radio-group>
         <ion-item>
           <ion-label position="stacked">Límite mensual</ion-label>
-          <ion-input type="number" [(ngModel)]="limit" placeholder="Ej: 500000"></ion-input>
+          <ion-input
+            type="number"
+            [(ngModel)]="limit"
+            placeholder="Ej: 500000"
+          ></ion-input>
         </ion-item>
       </ion-list>
 
@@ -54,24 +97,30 @@ import { FormsModule } from '@angular/forms';
       </ion-button>
     </ion-content>
   `,
-  styles: [`
-    .item-selected {
-      --background: rgba(37, 99, 235, 0.08);
-      --border-radius: 12px;
-    }
-  `]
+  styles: [
+    `
+      .item-selected {
+        --background: rgba(37, 99, 235, 0.08);
+        --border-radius: 12px;
+      }
+    `,
+  ],
 })
 export class BudgetModalComponent implements OnInit {
   @Input() categories: any[] = [];
   @Input() existingBudgets: any[] = [];
   @Input() mode: 'create' | 'edit' = 'create';
-  @Input() budgetToEdit: { id: string; categoryId: string; limit: number } | null = null;
+  @Input() budgetToEdit: {
+    id: string;
+    categoryId: string;
+    limit: number;
+  } | null = null;
 
   selectedCategoryId: string = '';
   limit: number = 0;
   availableCategories: any[] = [];
 
-  constructor(private modalController: ModalController) { }
+  constructor(private modalController: ModalController) {}
 
   ngOnInit() {
     if (this.mode === 'edit' && this.budgetToEdit) {
@@ -79,16 +128,24 @@ export class BudgetModalComponent implements OnInit {
       this.limit = this.budgetToEdit.limit;
     }
 
-    const existingIds = this.existingBudgets.map(b => b.categoryId);
+    const existingIds = this.existingBudgets.map((b) => b.categoryId);
     if (this.mode === 'create') {
-      this.availableCategories = this.categories.filter(c => !existingIds.includes(c.id));
+      this.availableCategories = this.categories.filter(
+        (c) => !existingIds.includes(c.id),
+      );
     } else {
-      this.availableCategories = this.categories.filter(c => !existingIds.includes(c.id) || c.id === this.selectedCategoryId);
+      this.availableCategories = this.categories.filter(
+        (c) => !existingIds.includes(c.id) || c.id === this.selectedCategoryId,
+      );
     }
   }
 
   selectCategory(categoryId: string) {
     this.selectedCategoryId = categoryId;
+  }
+
+  dismiss() {
+    this.modalController.dismiss();
   }
 
   save() {
@@ -100,19 +157,16 @@ export class BudgetModalComponent implements OnInit {
       alert('Ingresa un límite válido mayor a cero');
       return;
     }
+
     this.modalController.dismiss({
       budget: {
         categoryId: this.selectedCategoryId,
-        limit: this.limit
-      }
+        limit: Number(this.limit),
+      },
     });
   }
 
   deleteBudget() {
     this.modalController.dismiss({ delete: true });
-  }
-
-  dismiss() {
-    this.modalController.dismiss();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
 
@@ -11,7 +11,7 @@ import { AuthService } from '../../auth.service';
 @Component({
   selector: 'app-splash',
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './splash.page.html',
   styleUrls: ['./splash.page.scss'],

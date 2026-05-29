@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, AlertController } from '@ionic/angular';
+import { 
+  AlertController, IonHeader, IonToolbar, IonTitle, IonContent, 
+  IonList, IonItem, IonLabel, IonButton, IonIcon, IonFooter, IonMenuButton
+} from '@ionic/angular/standalone';
 import { AuthService } from '../../../auth/auth.service';
 import { StorageService } from '../../../../core/services/storage.service';
 import { User } from '../../../../core/models/user';
@@ -11,7 +14,7 @@ import { BudgetService } from '../../../../core/services/budget.service';
 @Component({
     selector: 'app-settings',
     standalone: true,
-    imports: [CommonModule, IonicModule],
+    imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton, IonIcon, IonFooter, IonMenuButton],
     templateUrl: './settings.page.html',
     styleUrls: ['./settings.page.scss'],
 })
@@ -137,35 +140,29 @@ export class SettingsPage implements OnInit {
                 { text: 'Cancelar', role: 'cancel' },
                 {
                     text: 'Continuar',
-                    handler: async (data) => {
-                        const currentPin = data.currentPin;
-                        if (!currentPin) {
-                            const errorAlert = await this.alertCtrl.create({
-                                header: 'Error',
-                                message: 'Debes ingresar el PIN actual.',
-                                buttons: ['OK'],
-                            });
-                            await errorAlert.present();
-                            return false;
-                        }
-                        // Verificar PIN actual usando AuthService
-                        const isValid = await this.authService.login(currentPin);
-                        if (!isValid) {
-                            const errorAlert = await this.alertCtrl.create({
-                                header: 'Error',
-                                message: 'PIN actual incorrecto.',
-                                buttons: ['OK'],
-                            });
-                            await errorAlert.present();
-                            return false;
-                        }
-                        await this.requestNewPin();
+                    handler: (data) => {
+                        void this.handleCurrentPinVerification(data.currentPin);
                         return true;
                     },
                 },
             ],
         });
         await currentPinAlert.present();
+    }
+
+    private async handleCurrentPinVerification(currentPin: string): Promise<void> {
+        if (!currentPin) {
+            await this.showAlert('Error', 'Debes ingresar el PIN actual.');
+            return;
+        }
+
+        const isValid = await this.authService.login(currentPin);
+        if (!isValid) {
+            await this.showAlert('Error', 'PIN actual incorrecto.');
+            return;
+        }
+
+        await this.requestNewPin();
     }
 
     private async requestNewPin() {
@@ -187,50 +184,42 @@ export class SettingsPage implements OnInit {
                 { text: 'Cancelar', role: 'cancel' },
                 {
                     text: 'Guardar',
-                    handler: async (data) => {
-                        const newPin = data.newPin;
-                        const confirmPin = data.confirmPin;
-                        if (!newPin) {
-                            const errorAlert = await this.alertCtrl.create({
-                                header: 'Error',
-                                message: 'El PIN no puede estar vacío.',
-                                buttons: ['OK'],
-                            });
-                            await errorAlert.present();
-                            return false;
-                        }
-                        if (newPin !== confirmPin) {
-                            const errorAlert = await this.alertCtrl.create({
-                                header: 'Error',
-                                message: 'Los PIN no coinciden.',
-                                buttons: ['OK'],
-                            });
-                            await errorAlert.present();
-                            return false;
-                        }
-                        try {
-                            await this.authService.changePin(newPin);
-                            const successAlert = await this.alertCtrl.create({
-                                header: 'Éxito',
-                                message: 'PIN actualizado correctamente.',
-                                buttons: ['OK'],
-                            });
-                            await successAlert.present();
-                            this.currentUser = await this.authService.getCurrentUser();
-                        } catch (error: any) {
-                            const errorAlert = await this.alertCtrl.create({
-                                header: 'Error',
-                                message: error.message || 'No se pudo actualizar el PIN.',
-                                buttons: ['OK'],
-                            });
-                            await errorAlert.present();
-                        }
+                    handler: (data) => {
+                        void this.handleNewPinSave(data.newPin, data.confirmPin);
                         return true;
                     },
                 },
             ],
         });
         await newPinAlert.present();
+    }
+
+    private async handleNewPinSave(newPin: string, confirmPin: string): Promise<void> {
+        if (!newPin) {
+            await this.showAlert('Error', 'El PIN no puede estar vacío.');
+            return;
+        }
+        if (newPin !== confirmPin) {
+            await this.showAlert('Error', 'Los PIN no coinciden.');
+            return;
+        }
+        try {
+            await this.authService.changePin(newPin);
+            await this.showAlert('Éxito', 'PIN actualizado correctamente.');
+            this.currentUser = await this.authService.getCurrentUser();
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'No se pudo actualizar el PIN.';
+            await this.showAlert('Error', message);
+        }
+    }
+
+    private async showAlert(header: string, message: string): Promise<void> {
+        const alert = await this.alertCtrl.create({
+            header,
+            message,
+            buttons: ['OK'],
+        });
+        await alert.present();
     }
 
     // ==================== EXPORTAR DATOS A PDF ====================

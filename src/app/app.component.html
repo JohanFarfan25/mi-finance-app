@@ -32,7 +32,7 @@
       </ion-toolbar>
     </ion-footer>
   </ion-menu>
-  <!-- Shell: header + outlet (sin ion-content padre: rompe scroll/toques en WebView nativo) -->
+
   <div class="ion-page" id="main-content">
     <ion-header class="app-shell-header" *ngIf="showShellHeader">
       <ion-toolbar>
@@ -43,5 +43,6 @@
       </ion-toolbar>
     </ion-header>
     <ion-router-outlet></ion-router-outlet>
+    <app-bottom-nav *ngIf="showBottomNav"></app-bottom-nav>
   </div>
 </ion-app>

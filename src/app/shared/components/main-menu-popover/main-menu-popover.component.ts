@@ -1,14 +1,14 @@
 
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, PopoverController } from '@ionic/angular';
+import { PopoverController, IonList, IonItem, IonIcon, IonLabel } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../features/auth/auth.service';
 
 @Component({
     selector: 'app-main-menu-popover',
     standalone: true,
-    imports: [CommonModule, IonicModule],
+    imports: [CommonModule, IonList, IonItem, IonIcon, IonLabel],
     template: `
     <ion-list class="menu-popover">
       <ion-item button (click)="navigateTo('/budgets')">

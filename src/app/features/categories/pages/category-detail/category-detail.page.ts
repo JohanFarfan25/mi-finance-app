@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonFooter, IonMenuButton } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { CategoryService } from '../../../../core/services/category.service';
@@ -11,7 +11,7 @@ import { Transaction } from '../../../../core/models/transaction';
 @Component({
     selector: 'app-category-detail',
     standalone: true,
-    imports: [CommonModule, IonicModule],
+    imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonFooter, IonMenuButton],
     templateUrl: './category-detail.page.html',
     styleUrls: ['./category-detail.page.scss'],
 })

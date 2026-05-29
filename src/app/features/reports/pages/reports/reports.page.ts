@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonFooter, IonMenuButton } from '@ionic/angular/standalone';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import { AuthService } from '../../../auth/auth.service';
@@ -9,7 +9,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 @Component({
     selector: 'app-reports',
     standalone: true,
-    imports: [CommonModule, IonicModule],
+    imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonFooter, IonMenuButton],
     templateUrl: './reports.page.html',
     styleUrls: ['./reports.page.scss'],
 })

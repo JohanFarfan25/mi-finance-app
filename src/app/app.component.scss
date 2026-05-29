@@ -1,3 +1,15 @@
+.ion-page#main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+ion-router-outlet {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
 // Estilos del menú lateral
 .custom-menu {
     --width: 280px;

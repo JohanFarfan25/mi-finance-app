@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonInput, IonSelect, IonSelectOption, IonFooter, IonMenuButton } from '@ionic/angular/standalone';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import { AuthService } from '../../../auth/auth.service';
@@ -11,7 +11,7 @@ import { Category } from '../../../../core/models/category';
 @Component({
     selector: 'app-expense',
     standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonInput, IonSelect, IonSelectOption, IonFooter, IonMenuButton],
     templateUrl: './expense.page.html',
     styleUrls: ['./expense.page.scss'],
 })

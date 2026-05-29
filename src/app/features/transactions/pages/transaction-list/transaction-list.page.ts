@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, AlertController } from '@ionic/angular';
+import { AlertController, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonFooter, IonMenuButton, IonItemSliding, IonItemOptions, IonItemOption } from '@ionic/angular/standalone';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import { AuthService } from '../../../auth/auth.service';
@@ -21,7 +21,7 @@ interface MovementItem {
 @Component({
     selector: 'app-transaction-list',
     standalone: true,
-    imports: [CommonModule, IonicModule],
+    imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonFooter, IonMenuButton, IonItemSliding, IonItemOptions, IonItemOption],
     templateUrl: './transaction-list.page.html',
     styleUrls: ['./transaction-list.page.scss'],
 })
