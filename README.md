@@ -1,19 +1,21 @@
 # My Finance App
 
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/6fa70487-3308-4922-9d8d-9d70556140f2" />
+## Capturas de pantalla
 
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/77b3d372-f753-4309-b3cb-3045f5eee46e" />
-
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/740e993a-0f01-4c93-95c1-8ea1c0891dfb" />
-
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/b318d681-0f70-473c-b7b2-25c4116b474b" />
-
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/09418f73-87f2-4c34-be8e-df88fa850ed7" />
-
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/f70d6bc1-0b1a-4e4b-acb3-5729da75cfd8" />
-
-<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/1138250f-6365-4e19-9daa-ee8d64bc1d1f" />
-
+<table>
+  <tr>
+    <td><img width="180" alt="Pantalla 1" src="https://github.com/user-attachments/assets/6fa70487-3308-4922-9d8d-9d70556140f2" /></td>
+    <td><img width="180" alt="Pantalla 2" src="https://github.com/user-attachments/assets/77b3d372-f753-4309-b3cb-3045f5eee46e" /></td>
+    <td><img width="180" alt="Pantalla 3" src="https://github.com/user-attachments/assets/740e993a-0f01-4c93-95c1-8ea1c0891dfb" /></td>
+    <td><img width="180" alt="Pantalla 4" src="https://github.com/user-attachments/assets/b318d681-0f70-473c-b7b2-25c4116b474b" /></td>
+  </tr>
+  <tr>
+    <td><img width="180" alt="Pantalla 5" src="https://github.com/user-attachments/assets/09418f73-87f2-4c34-be8e-df88fa850ed7" /></td>
+    <td><img width="180" alt="Pantalla 6" src="https://github.com/user-attachments/assets/f70d6bc1-0b1a-4e4b-acb3-5729da75cfd8" /></td>
+    <td><img width="180" alt="Pantalla 7" src="https://github.com/user-attachments/assets/1138250f-6365-4e19-9daa-ee8d64bc1d1f" /></td>
+    <td></td>
+  </tr>
+</table>
 
 ## Descripción del proyecto
 
