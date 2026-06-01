@@ -1,34 +1,43 @@
 <ion-content class="ion-padding" [fullscreen]="true">
-    <div class="limited-container">
-        <div class="title-section">
-            <h3>Mis Categorias</h3>
-        </div>
-        <div class="categories-grid">
-            <div class="category-card" *ngFor="let cat of categories">
-                <div class="category-icon" [style.backgroundColor]="cat.backgroundColor">
-                    <ion-icon [name]="cat.icon" [style.color]="cat.color"></ion-icon>
-                </div>
-                <p class="category-name">{{ cat.name }}</p>
-                <p class="category-count">{{ cat.transactionCount }} transacciones</p>
-                <p class="category-total" [style.color]="cat.color">{{ cat.totalAmount |
-                    currency:currencyCode:'symbol':'1.0-0' }}</p>
-                <div class="category-actions">
-                    <ion-button fill="clear" size="small" (click)="editCategory(cat)">
-                        <ion-icon name="create-outline"></ion-icon>
-                    </ion-button>
-                    <ion-button fill="clear" size="small" color="danger" (click)="deleteCategory(cat.id)">
-                        <ion-icon name="trash-outline"></ion-icon>
-                    </ion-button>
-                    <ion-button fill="clear" size="small" (click)="viewCategory(cat)">
-                        <ion-icon name="eye-outline"></ion-icon>
-                    </ion-button>
-                </div>
-            </div>
-        </div>
+  <div class="limited-container">
+    <div class="title-section">
+      <h3>Mis Categorias</h3>
     </div>
-<ion-fab class="custom-fab" slot="fixed" (click)="createCategory()">
-        <ion-fab-button>
-            <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
+    <div class="categories-grid">
+      <div class="category-card" *ngFor="let cat of categories">
+        <div
+          class="category-icon"
+          [style.backgroundColor]="cat.backgroundColor"
+        >
+          <ion-icon [name]="cat.icon" [style.color]="cat.color"></ion-icon>
+        </div>
+        <p class="category-name">{{ cat.name }}</p>
+        <p class="category-count">{{ cat.transactionCount }} transacciones</p>
+        <p class="category-total" [style.color]="cat.color">
+          {{ cat.totalAmount | currency:currencyCode:'symbol':'1.0-0' }}
+        </p>
+        <div class="category-actions">
+          <ion-button fill="clear" size="small" (click)="editCategory(cat)">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            fill="clear"
+            size="small"
+            color="danger"
+            (click)="deleteCategory(cat.id)"
+          >
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" (click)="viewCategory(cat)">
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-fab class="custom-fab" slot="fixed" (click)="createCategory()">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
