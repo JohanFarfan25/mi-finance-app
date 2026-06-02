@@ -63,6 +63,7 @@ export class AppComponent {
     { title: 'Inicio', icon: 'home-outline', url: '/dashboard' },
     { title: 'Ingresos', icon: 'add-circle-outline', url: '/income' },
     { title: 'Gastos', icon: 'remove-circle-outline', url: '/expense' },
+    { title: 'Movimientos', icon: 'document-text-outline', url: '/transactions' },
     { title: 'Categorías', icon: 'pricetags-outline', url: '/categories' },
     { title: 'Presupuestos', icon: 'pie-chart-outline', url: '/budgets' },
     { title: 'Reportes', icon: 'bar-chart-outline', url: '/reports' },
