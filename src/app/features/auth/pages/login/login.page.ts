@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonButton, IonInput, IonCheckbox } from '@ionic/angular/standalone';
 import { AuthService } from '../../auth.service';
+import { environment } from 'src/environments/environment';
 
 /**
  * Página de inicio de sesión para la aplicación. Permite a los usuarios ingresar su PIN para autenticarse.
@@ -17,6 +18,7 @@ import { AuthService } from '../../auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
+  version = environment.version;
   loginForm: FormGroup;
   showPassword = false;
   showError = false;
