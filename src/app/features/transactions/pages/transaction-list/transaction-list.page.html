@@ -1,49 +1,139 @@
 <ion-content class="ion-padding" [fullscreen]="true">
-    <div class="limited-container">
-        <div class="transactions-wrapper">
-            <div class="title-section">
-                <h3>Movimientos</h3>
-            </div>
-            <div class="filter-tabs">
-                <button class="filter-tab" [class.active]="selectedFilter === 'all'"
-                    (click)="applyFilter('all')">Todos</button>
-                <button class="filter-tab" [class.active]="selectedFilter === 'income'"
-                    (click)="applyFilter('income')">Ingresos</button>
-                <button class="filter-tab" [class.active]="selectedFilter === 'expense'"
-                    (click)="applyFilter('expense')">Gastos</button>
-            </div>
+  <div class="limited-container">
+    <div class="transactions-wrapper">
+      <div class="title-section">
+        <h3>Movimientos</h3>
+      </div>
 
-            <div class="movements-list">
-                <div *ngIf="filteredMovements.length === 0" class="empty-state">
-                    <ion-icon name="document-text-outline"></ion-icon>
-                    <p>No hay movimientos registrados.</p>
-                </div>
+      <div class="search-container">
+        <ion-icon name="search-outline" class="search-icon"></ion-icon>
+        <ion-input
+          [(ngModel)]="searchTerm"
+          (ionInput)="onSearchChange($any($event).target.value)"
+          placeholder="Buscar..."
+          clear-input
+          class="search-input"
+        >
+        </ion-input>
+        <ion-icon
+          *ngIf="searchTerm"
+          name="close-circle"
+          class="clear-icon"
+          (click)="clearSearch()"
+        >
+        </ion-icon>
+      </div>
 
-                <ion-item-sliding *ngFor="let item of filteredMovements">
-                    <ion-item lines="none" class="movement-item-container">
-                        <div class="movement-item">
-                            <div class="movement-icon" [style.backgroundColor]="item.categoryColor + '20'">
-                                <ion-icon [name]="item.categoryIcon" [style.color]="item.categoryColor"></ion-icon>
-                            </div>
-                            <div class="movement-info">
-                                <p class="movement-name">{{ item.description }}</p>
-                                <p class="movement-detail">{{ item.categoryName }} &bull; {{ item.date |
-                                    date:'dd/MM/yyyy' }}</p>
-                            </div>
-                            <p class="movement-amount" [class.amount-positive]="item.type === 'income'"
-                                [class.amount-negative]="item.type === 'expense'">
-                                {{ item.type === 'income' ? '+' : '-' }}{{ item.amount |
-                                currency:currencyCode:'symbol':'1.0-0' }}
-                            </p>
-                        </div>
-                    </ion-item>
-                    <ion-item-options side="end">
-                        <ion-item-option color="danger" (click)="deleteMovement(item.id)">
-                            <ion-icon slot="icon-only" name="trash"></ion-icon>
-                        </ion-item-option>
-                    </ion-item-options>
-                </ion-item-sliding>
-            </div>
+      <div class="filter-tabs">
+        <button
+          class="filter-tab"
+          [class.active]="selectedFilter === 'all'"
+          (click)="applyFilter('all')"
+        >
+          Todos
+        </button>
+        <button
+          class="filter-tab"
+          [class.active]="selectedFilter === 'income'"
+          (click)="applyFilter('income')"
+        >
+          Ingresos
+        </button>
+        <button
+          class="filter-tab"
+          [class.active]="selectedFilter === 'expense'"
+          (click)="applyFilter('expense')"
+        >
+          Gastos
+        </button>
+      </div>
+
+      <div class="results-info" *ngIf="filteredMovements.length > 0">
+        <span
+          >Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - {{
+          getCurrentPageEnd() }} de {{ filteredMovements.length }}
+          movimientos</span
+        >
+      </div>
+
+      <div class="movements-list">
+        <div *ngIf="paginatedMovements.length === 0" class="empty-state">
+          <ion-icon name="document-text-outline"></ion-icon>
+          <p *ngIf="searchTerm && filteredMovements.length === 0">
+            No se encontraron resultados para "{{ searchTerm }}"
+          </p>
+          <p *ngIf="!searchTerm && filteredMovements.length === 0">
+            No hay movimientos registrados.
+          </p>
         </div>
+
+        <ion-item-sliding *ngFor="let item of paginatedMovements">
+          <ion-item lines="none" class="movement-item-container">
+            <div class="movement-item">
+              <div
+                class="movement-icon"
+                [style.backgroundColor]="item.categoryColor + '20'"
+              >
+                <ion-icon
+                  [name]="item.categoryIcon"
+                  [style.color]="item.categoryColor"
+                ></ion-icon>
+              </div>
+              <div class="movement-info">
+                <p class="movement-name">{{ item.description }}</p>
+                <p class="movement-detail">
+                  {{ item.categoryName }} &bull; {{ item.date |
+                  date:'dd/MM/yyyy' }}
+                </p>
+              </div>
+              <p
+                class="movement-amount"
+                [class.amount-positive]="item.type === 'income'"
+                [class.amount-negative]="item.type === 'expense'"
+              >
+                {{ item.type === 'income' ? '+' : '-' }}{{ item.amount |
+                currency:currencyCode:'symbol':'1.0-0' }}
+              </p>
+            </div>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="deleteMovement(item.id)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+
+      <div class="pagination-container" *ngIf="filteredMovements.length > 0">
+        <button
+          class="pagination-btn"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+        >
+          <ion-icon name="chevron-back-outline"></ion-icon>
+          Anterior
+        </button>
+
+        <div class="pagination-pages">
+          <button
+            *ngFor="let page of getPageNumbers()"
+            class="page-number"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        </div>
+
+        <button
+          class="pagination-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+        >
+          Siguiente
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+      </div>
     </div>
+  </div>
 </ion-content>

@@ -176,3 +176,168 @@ ion-header.dashboard-header {
         margin: 0;
     }
 }
+
+.search-container {
+    position: relative;
+    margin-bottom: 16px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+        border-color: #2563EB;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        color: #94A3B8;
+        pointer-events: none;
+    }
+
+    .search-input {
+        --padding-start: 44px;
+        --padding-end: 40px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        font-size: 14px;
+        --highlight-color-focused: transparent;
+        --border-radius: 12px;
+
+        ::ng-deep {
+            .native-input {
+                padding-left: 44px;
+            }
+        }
+    }
+
+    .clear-icon {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        color: #94A3B8;
+        cursor: pointer;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: #64748B;
+        }
+    }
+}
+
+// Estilos para información de resultados
+.results-info {
+    text-align: center;
+    font-size: 12px;
+    color: #64748B;
+    margin-bottom: 16px;
+    padding: 8px;
+    background: #F8FAFC;
+    border-radius: 8px;
+}
+
+// Estilos para paginación
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 16px 0;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    color: #0F172A;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    ion-icon {
+        font-size: 16px;
+    }
+}
+
+.pagination-pages {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.page-number {
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    color: #0F172A;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+    }
+
+    &.active {
+        background: #2563EB;
+        border-color: #2563EB;
+        color: white;
+    }
+}
+
+// Responsive para móviles
+@media (max-width: 480px) {
+    .pagination-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .pagination-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pagination-pages {
+        order: -1;
+        width: 100%;
+    }
+
+    .page-number {
+        min-width: 40px;
+        height: 40px;
+    }
+}
