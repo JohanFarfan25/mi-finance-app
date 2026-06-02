@@ -283,3 +283,27 @@
         margin: 0;
     }
 }
+
+.datetime-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+}
+
+.datetime-btn {
+    flex: 1;
+    height: 48px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.cancel {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.confirm {
+    background: #ef4444;
+    color: white;
+}
