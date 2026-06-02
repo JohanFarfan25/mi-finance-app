@@ -23,6 +23,7 @@ import { User } from '../../../../core/models/user';
 import { TransactionService } from '../../../../core/services/transaction.service';
 import { CategoryService } from '../../../../core/services/category.service';
 import { BudgetService } from '../../../../core/services/budget.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-settings',
@@ -48,6 +49,7 @@ import { BudgetService } from '../../../../core/services/budget.service';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
+  version = environment.version;
   currentUser: User | null = null;
   userName = '';
   userEmail = '';
