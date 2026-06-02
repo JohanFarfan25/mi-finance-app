@@ -230,9 +230,6 @@ export class DashboardPage implements OnInit {
   goToBudgets() { window.location.href = '/budgets'; }
   goToDashboard() { /* ya estamos en dashboard */ }
 
-  openNotifications() {
-    console.log('Abrir notificaciones');
-  }
 
   async logout() {
     await this.authService.logout();
