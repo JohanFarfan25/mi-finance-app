@@ -20,13 +20,20 @@ export class SplashPage implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   async ngOnInit() {
+    const audio = new Audio('assets/sounds/splash.mp3');
+    audio.volume = 0.1;
+    audio.play().catch(error => {
+      console.error('Error reproduciendo audio:', error);
+    });
+
     setTimeout(async () => {
       const isAuth = await this.authService.isAuthenticated();
+
       if (isAuth) {
         this.router.navigate(['/dashboard'], { replaceUrl: true });
       } else {
         this.router.navigate(['/auth/register'], { replaceUrl: true });
       }
-    }, 1500);
+    }, 5000);
   }
 }
