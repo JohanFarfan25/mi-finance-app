@@ -1,6 +1,6 @@
 <ion-app>
   <!-- Menú lateral -->
-  <ion-menu side="start" menuId="main-menu" contentId="main-content" class="custom-menu">
+  <ion-menu id="side-menu" side="start" menuId="main-menu" contentId="main-content" class="custom-menu">
     <ion-header>
       <ion-toolbar color="primary" class="menu-toolbar">
         <ion-title>My Finance App</ion-title>
@@ -37,7 +37,7 @@
     <ion-header class="app-shell-header" *ngIf="showShellHeader">
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-menu-button menu="main-menu"></ion-menu-button>
+          <ion-menu-button id="menu-button" menu="main-menu"></ion-menu-button>
         </ion-buttons>
         <ion-title>My Finance App</ion-title>
         <ion-text slot="end" class="app-version">v{{ version }}</ion-text>

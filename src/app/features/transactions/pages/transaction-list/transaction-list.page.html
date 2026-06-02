@@ -69,7 +69,7 @@
 
         <ion-item-sliding *ngFor="let item of paginatedMovements">
           <ion-item lines="none" class="movement-item-container">
-            <div class="movement-item">
+            <div class="movement-item" (click)="presentMovementActions(item)" style="cursor: pointer;">
               <div
                 class="movement-icon"
                 [style.backgroundColor]="item.categoryColor + '20'"
@@ -97,6 +97,9 @@
             </div>
           </ion-item>
           <ion-item-options side="end">
+            <ion-item-option color="primary" (click)="editMovement(item)">
+              <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+            </ion-item-option>
             <ion-item-option color="danger" (click)="deleteMovement(item.id)">
               <ion-icon slot="icon-only" name="trash"></ion-icon>
             </ion-item-option>

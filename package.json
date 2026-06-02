@@ -33,6 +33,7 @@
     "@ionic/core": "^8.8.8",
     "@ionic/storage-angular": "^4.0.0",
     "cordova-sqlite-storage": "^7.0.0",
+    "driver.js": "^1.4.0",
     "html2canvas": "^1.4.1",
     "ionicons": "^8.0.13",
     "jeep-sqlite": "^2.8.0",

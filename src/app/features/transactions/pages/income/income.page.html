@@ -1,7 +1,11 @@
 <ion-content class="ion-padding" [fullscreen]="true">
   <div class="limited-container">
-    <div class="title-section">
-      <h3>Nuevo Ingreso</h3>
+    <div class="income-header-row" style="margin-bottom: 22px; padding: 8px 0;">
+      <button class="income-back-btn" (click)="goBack()">
+        <ion-icon name="arrow-back-outline" style="font-size: 20px; color: #0F172A;"></ion-icon>
+      </button>
+      <h3 class="income-header-title">{{ isEditing ? 'Editar Ingreso' : 'Nuevo Ingreso' }}</h3>
+      <div style="width: 36px;"></div>
     </div>
     <div class="income-wrapper">
       <div class="income-body">
@@ -175,7 +179,7 @@
             <polyline points="17 21 17 13 7 13 7 21" />
             <polyline points="7 3 7 8 15 8" />
           </svg>
-          Guardar Ingreso
+          {{ isEditing ? 'Guardar Cambios' : 'Guardar Ingreso' }}
         </button>
       </div>
     </div>

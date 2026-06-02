@@ -1,7 +1,7 @@
 <ion-footer class="app-bottom-nav">
   <ion-toolbar>
     <nav class="app-bottom-nav-row" aria-label="Navegación principal">
-      <button type="button" class="app-bottom-nav-item" [class.active]="isActive(items[0])"
+      <button id="nav-home" type="button" class="app-bottom-nav-item" [class.active]="isActive(items[0])"
         (click)="navigate(items[0].path)">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
           aria-hidden="true">
@@ -10,7 +10,7 @@
         </svg>
         <span>{{ items[0].label }}</span>
       </button>
-      <button type="button" class="app-bottom-nav-item" [class.active]="isActive(items[1])"
+      <button  id="nav-income" type="button" class="app-bottom-nav-item" [class.active]="isActive(items[1])"
         (click)="navigate(items[1].path)">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
           aria-hidden="true">
@@ -18,7 +18,7 @@
         </svg>
         <span>{{ items[1].label }}</span>
       </button>
-      <button type="button" class="app-bottom-nav-item" [class.active]="isActive(items[2])"
+      <button  id="nav-expense" type="button" class="app-bottom-nav-item" [class.active]="isActive(items[2])"
         (click)="navigate(items[2].path)">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
           aria-hidden="true">
@@ -26,7 +26,7 @@
         </svg>
         <span>{{ items[2].label }}</span>
       </button>
-      <button type="button" class="app-bottom-nav-item" [class.active]="isActive(items[3])"
+      <button  id="nav-categories" type="button" class="app-bottom-nav-item" [class.active]="isActive(items[3])"
         (click)="navigate(items[3].path)">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
           aria-hidden="true">
@@ -35,7 +35,7 @@
         </svg>
         <span>{{ items[3].label }}</span>
       </button>
-      <button type="button" class="app-bottom-nav-item" [class.active]="isActive(items[4])"
+      <button  id="nav-settings" type="button" class="app-bottom-nav-item" [class.active]="isActive(items[4])"
         (click)="navigate(items[4].path)">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
           aria-hidden="true">

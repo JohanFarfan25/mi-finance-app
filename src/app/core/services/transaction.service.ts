@@ -23,6 +23,12 @@ export class TransactionService {
         return all.filter(t => t.userId === userId);
     }
 
+    //** Indica si el usuario tiene movimientos registrados **///
+    async hasTransactions(userId: string): Promise<boolean> {
+        const transactions = await this.getTransactionsByUserId(userId);
+        return transactions.length > 0;
+    }
+
     //** Agrega una nueva transacción **///
     async addTransaction(transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transaction> {
         const newTransaction: Transaction = {

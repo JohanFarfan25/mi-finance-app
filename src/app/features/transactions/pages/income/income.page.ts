@@ -61,6 +61,8 @@ export class IncomePage implements OnInit {
 
   incomeCategories: Category[] = [];
   currentUser: User | null = null;
+  isEditing: boolean = false;
+  editingTransactionId: string = '';
 
   constructor(
     private transactionService: TransactionService,
@@ -70,7 +72,32 @@ export class IncomePage implements OnInit {
 
   async ngOnInit() {
     this.currentUser = await this.authService.getCurrentUser();
-    if (this.currentUser) await this.loadCategories();
+    if (this.currentUser) {
+      await this.loadCategories();
+
+      const params = new URLSearchParams(window.location.search);
+      const editId = params.get('id');
+      if (editId) {
+        this.isEditing = true;
+        this.editingTransactionId = editId;
+        await this.loadTransactionForEditing(editId);
+      }
+    }
+  }
+
+  async loadTransactionForEditing(id: string) {
+    if (!this.currentUser) return;
+    const transactions = await this.transactionService.getTransactionsByUserId(this.currentUser.id);
+    const tx = transactions.find(t => t.id === id);
+    if (tx) {
+      this.amount = tx.amount;
+      this.selectedCategoryId = tx.categoryId;
+      this.description = tx.description;
+      this.selectedDate = new Date(tx.date);
+
+      const cat = await this.categoryService.getCategoryById(tx.categoryId, this.currentUser.id);
+      this.selectedCategoryName = cat?.name || 'General';
+    }
   }
 
   async loadCategories() {
@@ -137,18 +164,29 @@ export class IncomePage implements OnInit {
       return;
     }
     if (!this.currentUser) return;
-    const tx = {
-      userId: this.currentUser.id,
-      type: 'income' as const,
-      amount: this.amount,
-      categoryId: this.selectedCategoryId,
-      description: this.description,
-      date: this.selectedDate,
-    };
     try {
-      await this.transactionService.addTransaction(tx);
-      alert('Ingreso guardado');
-      window.location.href = '/dashboard';
+      if (this.isEditing) {
+        await this.transactionService.updateTransaction(this.editingTransactionId, {
+          amount: this.amount,
+          categoryId: this.selectedCategoryId,
+          description: this.description,
+          date: this.selectedDate,
+        });
+        alert('Ingreso actualizado');
+        window.location.href = '/transactions';
+      } else {
+        const tx = {
+          userId: this.currentUser.id,
+          type: 'income' as const,
+          amount: this.amount,
+          categoryId: this.selectedCategoryId,
+          description: this.description,
+          date: this.selectedDate,
+        };
+        await this.transactionService.addTransaction(tx);
+        alert('Ingreso guardado');
+        window.location.href = '/dashboard';
+      }
     } catch (e) {
       console.error(e);
       alert('Error al guardar');
@@ -156,7 +194,11 @@ export class IncomePage implements OnInit {
   }
 
   goBack() {
-    window.location.href = '/dashboard';
+    if (this.isEditing) {
+      window.location.href = '/transactions';
+    } else {
+      window.location.href = '/dashboard';
+    }
   }
   goToDashboard() {
     window.location.href = '/dashboard';

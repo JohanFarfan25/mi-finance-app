@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
     AlertController,
+    ActionSheetController,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -83,7 +84,8 @@ export class TransactionListPage implements OnInit {
         private transactionService: TransactionService,
         private categoryService: CategoryService,
         private authService: AuthService,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private actionSheetController: ActionSheetController
     ) { }
 
     async ionViewWillEnter() {
@@ -247,6 +249,44 @@ export class TransactionListPage implements OnInit {
             ]
         });
         await alert.present();
+    }
+
+    editMovement(item: MovementItem) {
+        if (item.type === 'income') {
+            window.location.href = `/income?id=${item.id}`;
+        } else {
+            window.location.href = `/expense?id=${item.id}`;
+        }
+    }
+
+    async presentMovementActions(item: MovementItem) {
+        const actionSheet = await this.actionSheetController.create({
+            header: 'Opciones de Movimiento',
+            subHeader: item.description,
+            buttons: [
+                {
+                    text: 'Editar',
+                    icon: 'create-outline',
+                    handler: () => {
+                        this.editMovement(item);
+                    }
+                },
+                {
+                    text: 'Eliminar',
+                    role: 'destructive',
+                    icon: 'trash-outline',
+                    handler: () => {
+                        this.deleteMovement(item.id);
+                    }
+                },
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    icon: 'close-outline'
+                }
+            ]
+        });
+        await actionSheet.present();
     }
 
     goToDashboard() { window.location.href = '/dashboard'; }

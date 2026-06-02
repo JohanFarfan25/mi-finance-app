@@ -6,6 +6,7 @@ import { TransactionService } from '../../../../core/services/transaction.servic
 import { CategoryService } from '../../../../core/services/category.service';
 import { User } from '../../../../core/models/user';
 import { Transaction } from '../../../../core/models/transaction';
+import { TourService } from 'src/app/core/services/tour.service';
 
 interface QuickAction {
   id: string;
@@ -62,12 +63,45 @@ export class DashboardPage implements OnInit {
   ];
 
   private allTransactions: Transaction[] = [];
+  private tourShown = false;
 
   constructor(
     private authService: AuthService,
     private transactionService: TransactionService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private tourService: TourService
   ) { }
+
+
+  async ionViewDidEnter() {
+
+    if (this.tourShown) {
+      return;
+    }
+
+    const user =
+      await this.authService.getCurrentUser();
+
+    if (!user) {
+      return;
+    }
+
+    const hasTransactions =
+      await this.transactionService.hasTransactions(
+        user.id
+      );
+
+    if (!hasTransactions) {
+
+      this.tourShown = true;
+
+      setTimeout(() => {
+        this.tourService.startDashboardTour();
+      }, 800);
+
+    }
+
+  }
 
   async ngOnInit() {
     await this.loadUserData();
