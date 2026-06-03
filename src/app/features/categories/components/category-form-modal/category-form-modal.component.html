@@ -1,50 +1,145 @@
 <ion-header class="ion-no-border">
-    <ion-toolbar>
-        <ion-title>{{ isEdit ? 'Editar' : 'Nueva' }} categoría</ion-title>
-        <ion-buttons slot="end">
-            <ion-button (click)="dismiss()">
-                <ion-icon name="close-outline" slot="icon-only"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-title>{{ isEdit ? "Editar" : "Nueva" }} categoría</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-    <div class="category-form-container">
-        <ion-item lines="none" class="form-item">
-            <ion-label position="floating">Nombre *</ion-label>
-            <ion-input [(ngModel)]="categoryData.name" required></ion-input>
-        </ion-item>
+  <div class="category-form-container">
+    <ion-item lines="none" class="form-item">
+      <ion-label position="floating">Nombre *</ion-label>
+      <ion-input [(ngModel)]="categoryData.name" required></ion-input>
+    </ion-item>
 
-        <ion-item lines="none" class="form-item">
-            <ion-label position="floating">Icono (Ionicons)</ion-label>
-            <ion-input [(ngModel)]="categoryData.icon" placeholder="ej. cart-outline"></ion-input>
-        </ion-item>
+    <ion-item lines="none" class="form-item">
+      <ion-label>Tipo</ion-label>
 
-        <ion-item lines="none" class="form-item">
-            <ion-label position="floating">Color (hex)</ion-label>
-            <ion-input [(ngModel)]="categoryData.color" placeholder="#3B82F6"></ion-input>
-        </ion-item>
+      <ion-select [(ngModel)]="categoryData.type" interface="action-sheet">
+        <ion-select-option value="income"> Ingreso </ion-select-option>
 
-        <ion-item lines="none" class="form-item">
-            <ion-label>Tipo</ion-label>
-            <ion-select [(ngModel)]="categoryData.type" interface="action-sheet">
-                <ion-select-option value="income">Ingreso</ion-select-option>
-                <ion-select-option value="expense">Gasto</ion-select-option>
-            </ion-select>
-        </ion-item>
+        <ion-select-option value="expense"> Gasto </ion-select-option>
+      </ion-select>
+    </ion-item>
 
-        <div class="preview-section" *ngIf="categoryData.name">
-            <p>Vista previa:</p>
-            <div class="preview-icon" [style.backgroundColor]="categoryData.color + '20'">
-                <ion-icon [name]="categoryData.icon || 'pricetag-outline'"
-                    [style.color]="categoryData.color"></ion-icon>
-                <span>{{ categoryData.name }}</span>
-            </div>
-        </div>
+    <ion-item lines="none" class="form-item form-item-button">
+      <ion-label>Icono seleccionado</ion-label>
 
-        <ion-button expand="block" (click)="save()" [disabled]="!categoryData.name" class="save-button">
-            {{ isEdit ? 'Actualizar' : 'Crear' }}
+      <div slot="end" class="selection-preview">
+        <ion-icon
+          [name]="categoryData.icon"
+          size="large"
+          [style.color]="categoryData.color"
+          class="preview-selection-icon"
+        >
+        </ion-icon>
+
+        <ion-button
+          fill="clear"
+          size="small"
+          (click)="showIconSelector = !showIconSelector"
+        >
+          <ion-icon name="create-outline" slot="icon-only"></ion-icon>
         </ion-button>
+      </div>
+    </ion-item>
+
+    <div *ngIf="showIconSelector">
+      <ion-accordion-group expand="inset">
+        <ion-accordion *ngFor="let group of iconGroups" [value]="group.title">
+          <ion-item slot="header">
+            <ion-label>{{ group.title }}</ion-label>
+          </ion-item>
+
+          <div slot="content" class="accordion-content scroll-content">
+            <div class="icons-grid">
+              <div
+                *ngFor="let icon of group.icons"
+                class="icon-option"
+                [class.selected]="categoryData.icon === icon"
+                (click)="selectIcon(icon)"
+              >
+                <ion-icon [name]="icon"></ion-icon>
+
+                <small>
+                  {{ icon.replace("-outline", "") }}
+                </small>
+              </div>
+            </div>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
     </div>
+
+    <ion-item lines="none" class="form-item mt-3">
+      <ion-label>Color seleccionado</ion-label>
+
+      <div slot="end" class="selection-preview">
+        <div
+          class="selected-color"
+          [style.background]="categoryData.color"
+        ></div>
+
+        <ion-button
+          fill="clear"
+          size="small"
+          (click)="showColorSelector = !showColorSelector"
+        >
+          <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+
+    <div *ngIf="showColorSelector">
+      <ion-accordion-group expand="inset">
+        <ion-accordion *ngFor="let group of colorGroups" [value]="group.title">
+          <ion-item slot="header">
+            <ion-label>{{ group.title }}</ion-label>
+          </ion-item>
+
+          <div
+            slot="content"
+            class="accordion-content scroll-content colors-scroll"
+          >
+            <div class="colors-grid">
+              <div
+                *ngFor="let color of group.colors"
+                class="color-option"
+                [style.background]="color"
+                [class.selected]="categoryData.color === color"
+                (click)="selectColor(color)"
+              ></div>
+            </div>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </div>
+
+    <div class="preview-section" *ngIf="categoryData.name">
+      <p>Vista previa:</p>
+
+      <div
+        class="preview-icon"
+        [style.backgroundColor]="categoryData.color + '20'"
+      >
+        <ion-icon [name]="categoryData.icon" [style.color]="categoryData.color">
+        </ion-icon>
+
+        <span>{{ categoryData.name }}</span>
+      </div>
+    </div>
+
+    <ion-button
+      expand="block"
+      class="save-button"
+      (click)="save()"
+      [disabled]="!categoryData.name"
+    >
+      {{ isEdit ? "Actualizar" : "Crear" }}
+    </ion-button>
+  </div>
 </ion-content>
