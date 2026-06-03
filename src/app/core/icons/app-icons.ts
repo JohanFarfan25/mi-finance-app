@@ -215,5 +215,7 @@ export function registerAppIcons(): void {
     'infinite-outline': infiniteOutline,
     'trending-down-outline': trendingDown,
     'trending-up-outline': trendingUp,
+    'trending-up': trendingUp,
+    'trending-down': trendingDown,
   });
 }
